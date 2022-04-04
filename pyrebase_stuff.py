@@ -28,38 +28,28 @@ Users = db.child('Users').get()
 Categories = db.child('Categories').get()
 # print(Users)
 
-users_list = []
+users_list = {}
 
 emails_list = []
-
+user_info = []
 for i in Users.each():
-
-    users_list.append(i.key())
+    users_list[i.key()]=i.val()
     emails_list.append(
         {'email': (i.val())['Email'], 'passwd': (i.val())['Password'],'user_name': (i.val())['UserName']})
 
-# print(users_list)
-# print(emails_list)
-
-u_email = "a@b.com"
-u_passwd = "IamPassword"
-
-for i in emails_list:
-    if str(u_email) == str(i['email']) and str(u_passwd)==str(i['passwd']):
-        print('User Exist')
-        break
-    else:
-        print('not')
-        
 
 
 def LogIn():
     login = False
     u_email = input('Email: ').strip()
     u_passwd = input('Password: ').strip()
-    for i in emails_list:
-        if str(u_email) == str(i['email']) and str(u_passwd)==str(i['passwd']):
+    for i in users_list.values():
+        if str(u_email) == str(i['Email']) and str(u_passwd)==str(i['Password']):
             print('User Exist')
+            user_info.append(i['UserName'])
+            user_info.append(i['Email'])
+            user_info.append(i['Password'])
+            print(user_info)
             break
         else:
             print('Not Exist')
@@ -87,7 +77,7 @@ def Register():
 
     email = input('Email: ').strip()
     for i in emails_list:
-        if str(i) == str(email):
+        if str(i['email']) == str(email):
             print('exist')
             Break
         else:
@@ -111,9 +101,9 @@ def Register():
     data = {
         "UserName":u_Name,
         "Email": email,
-        "Passwd": passwd
+        "Password": passwd
     }
-    Users.child(email).set(data)
+    db.child('Users').child(u_Name).set(data)
 
 # Register()
 LogIn()

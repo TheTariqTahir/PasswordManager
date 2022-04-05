@@ -52,19 +52,20 @@ MDBackdrop:
     name:'ShowPassword'
     MDBottomNavigation:
         panel_color: app.theme_cls.bg_light
-        
+
         MDBottomNavigationItem:
             name: 'MainPage'
             text: 'Main Page'
             icon: 'home'
+            on_tab_press:new_screen_manger.current='MainPage'
             
             # MDCard:
             #     md_bg_color:.2,.5,.1,1
             ScreenManager:
                 transition: RiseInTransition()
                 id:new_screen_manger
-                DetailsScreen:
                 MainPage:
+                DetailsScreen:
                 
 
         MDBottomNavigationItem:
@@ -121,11 +122,13 @@ MDBackdrop:
                     height:self.parent.height/3
                     orientation: 'vertical'
                     padding:dp(20)
+                    on_release:root.manager.current = 'DetailsScreen'
+
                     MDIcon:
                         icon:'facebook'
-                        font_size:dp(100)
+                        font_size:dp(60)
                         halign:'center'
-                        size_hint: 1,.8
+                        size_hint: 1,.5
                         theme_text_color:'Custom'
                         text_color:app.theme_cls.primary_dark
                         # pos_hint:{}
@@ -151,9 +154,9 @@ MDBackdrop:
                     on_release:root.manager.current = 'DetailsScreen'
                     MDIcon:
                         icon:'google'
-                        font_size:dp(100)
+                        font_size:dp(60)
                         halign:'center'
-                        size_hint: 1,.8
+                        size_hint: 1,.5
                         theme_text_color:'Custom'
                         text_color:app.theme_cls.primary_dark
                         # pos_hint:{}

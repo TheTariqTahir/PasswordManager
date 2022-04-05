@@ -38,6 +38,26 @@ for i in Users.each():
         {'email': (i.val())['Email'], 'passwd': (i.val())['Password'],'user_name': (i.val())['UserName']})
 
 
+for i in users_list.values():
+    user_info.append(i['UserName'])
+    user_info.append(i['Email'])
+    user_info.append(i['Password'])
+
+
+
+data = {
+    'Email':"a@b.com",
+    "Password":'asdfasdf',
+    "Remarks": 'i am something',
+}
+
+db.child('Categories').child('User1').child('Categories').child('facebook').push(data)
+
+
+
+
+
+
 
 def LogIn():
     login = False
@@ -106,4 +126,5 @@ def Register():
     db.child('Users').child(u_Name).set(data)
 
 # Register()
-LogIn()
+# LogIn()
+

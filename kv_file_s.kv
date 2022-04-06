@@ -1,0 +1,59 @@
+MDBoxLayout:
+    MDCard:
+        md_bg_color:app.theme_cls.bg_darkest
+        orientation: 'vertical'
+        padding: ('15dp', '20dp', '15dp', '15dp')
+        spacing: dp(15)
+        MDBoxLayout:
+            size_hint:1,.15
+            orientation: 'vertical'
+            MDCard:
+                radius:[25,]
+                md_bg_color:app.theme_cls.bg_light
+                elevation:25
+                MDLabel:
+                    text:'Categories'
+                    halign:'center'
+                    theme_text_color:'Custom'
+                    text_color:app.theme_cls.primary_color
+                    font_name:'font/Austein.ttf'
+                    font_size:dp(48)
+                    
+
+        MDGridLayout:
+            id: mainPageCard
+            cols:2
+            spacing: dp(15)
+            MDCard:
+                md_bg_color:app.theme_cls.bg_light
+                size_hint: .5,None
+                elevation:15
+                radius:dp(20)          
+                       
+                height:self.parent.height/4
+                orientation: 'vertical'
+                padding: ('20dp', '10dp', '20dp', '20dp')
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    spacing:dp(10)
+                    MDIcon:
+                        icon:'facebook'
+                        font_size:dp(80)
+                        halign:'center'
+                        size_hint: 1,.9
+                        # pos_hint:{'center_y':.4}
+                        # md_bg_color:.5,.2,.5,1
+                        theme_text_color:'Custom'
+                        text_color:app.theme_cls.primary_dark
+
+                    MDSeparator:
+                    MDLabel:
+                        pos_hint:{'center_y':.1}
+                        size_hint: 1,.1
+                        text:'Facebook'
+                        halign:'center'
+                        font_size:dp(20)
+                        theme_text_color:'Custom'
+                        text_color:app.theme_cls.primary_dark
+                

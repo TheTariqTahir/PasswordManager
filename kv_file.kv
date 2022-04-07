@@ -2,6 +2,10 @@
 #: import RiseInTransition kivy.uix.screenmanager.RiseInTransition
 #:import Clipboard kivy.core.clipboard.Clipboard
 
+<Category_content>
+    MDLabel:
+        text:'test'
+
 
 MDBackdrop:
     id:back_drop
@@ -15,7 +19,6 @@ MDBackdrop:
             size_hint: 1,None
             height:root.height/2
             pos_hint:{'center_y':.7}
-
             elevation:30
             radius:[25,]
             padding:20
@@ -43,6 +46,7 @@ MDBackdrop:
 
 
     MDBackdropFrontLayer:
+        id:front_layer
         ShowPassword:
        
                         
@@ -50,21 +54,23 @@ MDBackdrop:
 
 <ShowPassword>
     name:'ShowPassword'
+    id:ShowPassword
     MDBottomNavigation:
         panel_color: app.theme_cls.bg_light
-        
+
         MDBottomNavigationItem:
             name: 'MainPage'
             text: 'Main Page'
             icon: 'home'
+            on_tab_press:new_screen_manger.current='MainPage'
             
             # MDCard:
             #     md_bg_color:.2,.5,.1,1
             ScreenManager:
                 transition: RiseInTransition()
                 id:new_screen_manger
-                DetailsScreen:
                 MainPage:
+                DetailsScreen:
                 
 
         MDBottomNavigationItem:
@@ -87,84 +93,47 @@ MDBackdrop:
 <MainPage>:
     id:MainPage 
     name:'MainPage'
-    MDBoxLayout:
-        MDCard:
-            md_bg_color:app.theme_cls.bg_darkest
-            orientation: 'vertical'
-            padding: ('15dp', '0dp', '15dp', '15dp')
-            spacing: dp(15)
-            MDBoxLayout:
-                size_hint:1,.15
-                orientation: 'vertical'
-                MDCard:
-                    radius:[25,]
-                    md_bg_color:app.theme_cls.bg_light
-                    elevation:25
-                    MDLabel:
-                        text:'Categories'
-                        halign:'center'
-                        theme_text_color:'Custom'
-                        text_color:app.theme_cls.primary_color
-                        font_name:'font/Austein.ttf'
-                        font_size:dp(48)
-                        
 
+    MDCard:
+        md_bg_color:app.theme_cls.bg_darkest
+        orientation: 'vertical'
+        padding: ('15dp', '0dp', '15dp', '15dp')
+        spacing: dp(15)
+        MDBoxLayout:
+            size_hint:1,.15
+            spacing:dp(5)
+            MDCard:
+                radius:[25,]
+                size_hint:.5,1
+                md_bg_color:app.theme_cls.bg_light
+                elevation:25
+                MDLabel:
+                    text:'Categories'
+                    halign:'center'
+                    theme_text_color:'Custom'
+                    text_color:app.theme_cls.primary_color
+                    font_name:'font/Austein.ttf'
+                    font_size:dp(48)
+            MDCard:
+                size_hint:.1,1
+                radius:[36,]
+                elevation:0
+                on_release:app.add_category()
+                MDIcon:
+                    icon:'plus-box-multiple'
+                    halign:'center'
+                    theme_text_color:'Custom'
+                    text_color:app.theme_cls.primary_color
+                    
+                    
+        ScrollView:
             MDGridLayout:
                 id: mainPageCard
                 cols:2
+                row_default_height:130
+                adaptive_height:True
                 spacing: dp(15)
-                MDCard:
-                    md_bg_color:app.theme_cls.bg_light
-                    size_hint: .5,None
-                    elevation:15
-                    radius:dp(20)                 
-                    height:self.parent.height/3
-                    orientation: 'vertical'
-                    padding:dp(20)
-                    MDIcon:
-                        icon:'facebook'
-                        font_size:dp(100)
-                        halign:'center'
-                        size_hint: 1,.8
-                        theme_text_color:'Custom'
-                        text_color:app.theme_cls.primary_dark
-                        # pos_hint:{}
-                    MDSeparator:
-                    MDLabel:
-                        size_hint: 1,.2
-                        text:'Facebook'
-                        halign:'center'
-                        font_size:dp(20)
-                        theme_text_color:'Custom'
-                        text_color:app.theme_cls.primary_dark
-                        
-                        
-                        
-                MDCard:
-                    md_bg_color:app.theme_cls.bg_light
-                    size_hint: .5,None
-                    elevation:15
-                    radius:dp(20)                 
-                    height:self.parent.height/3
-                    orientation: 'vertical'
-                    padding:dp(20)
-                    on_release:root.manager.current = 'DetailsScreen'
-                    MDIcon:
-                        icon:'google'
-                        font_size:dp(100)
-                        halign:'center'
-                        size_hint: 1,.8
-                        theme_text_color:'Custom'
-                        text_color:app.theme_cls.primary_dark
-                        # pos_hint:{}
-                    MDSeparator:
-                    MDLabel:
-                        size_hint: 1,.2
-                        text:'Google'
-                        halign:'center'
-                        font_size:dp(20)
-                        theme_text_color:'Custom'
-                        text_color:app.theme_cls.primary_dark
+           
 
                          
 

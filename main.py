@@ -295,8 +295,6 @@ class Main(MDApp):
                 
             current_category = i.key()
             
-            
-            
             card = MDCard(
                 md_bg_color=self.theme_cls.bg_light,
                 size_hint= (.5,None),
@@ -320,8 +318,10 @@ class Main(MDApp):
             anchor.add_widget(icon)
             separator = MDSeparator()
             box_layout=MDBoxLayout(orientation= 'vertical',spacing=dp(10))
+
+            main_anchor_layout=AnchorLayout()
+            label_anchor_layout=AnchorLayout(anchor_x='center',anchor_y='center')
             label= MDLabel(
-                
                 text=current_category.upper(),
                 halign='center',
                 font_style='Button',
@@ -330,27 +330,30 @@ class Main(MDApp):
                 theme_text_color='Custom',
                 text_color=self.theme_cls.primary_color,
             )
-            
+            label_anchor_layout.add_widget(label)
+
+            delete_float_layout = MDFloatLayout()
+                
             delete_icon = MDIconButton(
                                 icon='delete-outline',
                                 user_font_size='20sp',
-                                
-                                anchor_y='center',
-                                pos_hint={'center_x':.5},
+                                pos_hint={'center_y':.5,'right':1.05},
                                 on_release=lambda x ,val = i.key():self.delete_category(val),
                             )
+            delete_float_layout.add_widget(delete_icon)
+            
+            main_anchor_layout.add_widget(label_anchor_layout)
+            main_anchor_layout.add_widget(delete_float_layout)
             box_layout.add_widget(anchor)
             box_layout.add_widget(separator)
 
-            floatLayout = MDFloatLayout(size_hint_x=.09)
-            floatLayout.add_widget(delete_icon)
 
             new_Box_layout=MDBoxLayout(size_hint=(1,.1))
             # new_Box_layout.add_widget(delete_icon)
             # box_layout.add_widget(label)
 
-            new_Box_layout.add_widget(label)
-            new_Box_layout.add_widget(floatLayout)
+            new_Box_layout.add_widget(main_anchor_layout)
+            # new_Box_layout.add_widget(delete_icon)
             
             
             box_layout.add_widget(new_Box_layout)

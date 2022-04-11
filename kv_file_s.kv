@@ -1,0 +1,124 @@
+Screen:
+    MDCard:
+        md_bg_color:app.theme_cls.bg_darkest
+        orientation: 'vertical'
+        padding: ('15dp', '0dp', '15dp', '15dp')
+        spacing: dp(15)
+        MDBoxLayout:
+            size_hint:1,.15
+            spacing:dp(5)
+            MDCard:
+                radius:[25,]
+                size_hint:.5,1
+                md_bg_color:app.theme_cls.bg_light
+                elevation:25
+                on_press:app.test_clear()
+                MDLabel:
+                    text:'Categories'
+                    halign:'center'
+                    theme_text_color:'Custom'
+                    text_color:app.theme_cls.primary_color
+                    font_name:'font/Austein.ttf'
+                    font_size:sp(50)
+                    
+            MDCard:
+                size_hint:.1,1
+                radius:[36,]
+                elevation:0
+                on_release:app.add_category_dialog()
+                MDIcon:
+                    icon:'plus-box-multiple'
+                    halign:'center'
+                    theme_text_color:'Custom'
+                    text_color:app.theme_cls.primary_color
+                    
+                    
+        ScrollView:
+            MDGridLayout:
+                id: mainPageCard
+                cols:2
+                
+                row_default_height:130
+                adaptive_height:True
+                spacing: dp(15)
+        # AnchorLayout:
+                MDCard:
+                    id:card
+                    md_bg_color:app.theme_cls.bg_light
+                    size_hint: (.8,None)
+                    height:root.width/4
+                    elevation:dp(5)
+                    radius:dp(20)
+                    orientation: 'vertical'
+                    padding: ('20dp', '10dp', '10dp', '20dp')
+                    
+                    AnchorLayout:
+                        size_hint:1,.8
+                        MDIconButton:
+                            icon:'google'
+                            user_font_size:sp(int(app.w[1]/11))
+                            pos_hint: {'center_x': 0.5,'center_y': .4}
+                            theme_text_color:'Custom'
+                            text_color:app.theme_cls.primary_color
+                        
+                    MDSeparator:
+                    MDBoxLayout:
+                        id:label_layout
+                        # orientation: 'vertical'
+                        size_hint:1,.2
+                        spacing:dp(10)
+                        MDLabel:
+                            text:'Google'
+                            halign:'center'
+                            pos_hint:{'center_y':.5}
+                            # font_size:sp(int(card.width/12))
+                            font_size:int(((label_layout.width+label_layout.height)/2)/4)
+                            theme_text_color:'Custom'
+                            text_color:app.theme_cls.primary_color
+
+                        MDIconButton:
+                            icon:'delete-outline'
+                            user_font_size:'20sp'
+                            anchor_y:'center'
+                            pos_hint:{'center_y':.5}
+                MDCard:
+                    id:card
+                    md_bg_color:app.theme_cls.bg_light
+                    size_hint: (.8,None)
+                    height:root.width/11
+                    elevation:dp(5)
+                    radius:dp(20)
+                    orientation: 'vertical'
+                    padding: ('20dp', '10dp', '10dp', '20dp')
+                    
+                    AnchorLayout:
+                        size_hint:1,.8
+                        MDIconButton:
+                            icon:'google'
+                            user_font_size:sp(int(app.w[1]/11))
+                            pos_hint: {'center_x': 0.5,'center_y': .4}
+                            theme_text_color:'Custom'
+                            text_color:app.theme_cls.primary_color
+                        
+                    MDSeparator:
+                    MDBoxLayout:
+                        id:label_layout
+                        # orientation: 'vertical'
+                        size_hint:1,.2
+                        spacing:dp(10)
+                        MDLabel:
+                            text:'Google'
+                            halign:'center'
+                            pos_hint:{'center_y':.5}
+                            # font_size:sp(int(card.width/12))
+                            font_size:int(((label_layout.width+label_layout.width)/2)/8.8)
+                            theme_text_color:'Custom'
+                            text_color:app.theme_cls.primary_color
+
+                        MDIconButton:
+                            icon:'delete-outline'
+                            user_font_size:'20sp'
+                            anchor_y:'center'
+                            pos_hint:{'center_y':.5}
+
+

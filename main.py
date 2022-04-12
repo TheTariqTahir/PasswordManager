@@ -370,7 +370,10 @@ class Main(MDApp):
                                 user_font_size='20sp',
                                 pos_hint={'center_y':.5,'center_x':.95},
                                 on_release=lambda x ,val = i.key():self.delete_category(val),
+                                theme_text_color='Custom',
+                                text_color=self.theme_cls.primary_color,
                             )
+                            
             delete_float.add_widget(delete_icon)
             
             anchor = AnchorLayout()

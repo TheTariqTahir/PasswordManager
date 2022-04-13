@@ -2,6 +2,213 @@
 #: import RiseInTransition kivy.uix.screenmanager.RiseInTransition
 #:import Clipboard kivy.core.clipboard.Clipboard
 
+<MDIconButton>:
+    ripple_scale:0
+    ripple_color:self.theme_cls.bg_light
+
+<MDTextField>:
+   
+
+<Eidt_details>
+    radius:[20,]
+    padding: ('0dp', '0dp', '0dp', '15dp')
+    orientation: 'vertical'
+    size_hint:1,None
+    height:app.w[1]/3.5
+    pos_hint:{'center_y':.5}
+    MDBoxLayout:
+        adaptive_height:True
+        size_hint_y:.15
+        MDLabel:
+            text:'Edit Details'
+            adaptive_height:True
+            theme_text_color:'Custom'
+            text_color:app.theme_cls.primary_color
+            pos_hint:{'center_y':.8}
+        MDLabel:
+            text:'Edit Details'
+            size_hint_x:.0001
+            id:edit_key
+            adaptive_height:True
+            theme_text_color:'Custom'
+            text_color:app.theme_cls.bg_light
+            pos_hint:{'center_y':.8}
+        MDLabel:
+            text:'Edit Details'
+            id:edit_category
+            size_hint_x:.0001
+            adaptive_height:True
+            theme_text_color:'Custom'
+            text_color:app.theme_cls.bg_light
+            pos_hint:{'center_y':.8}
+        MDIconButton:
+            icon:'check-circle-outline'
+            on_press:app.update_details(edit_key.text,edit_category.text,edit_hint.text,edit_email.text,edit_pass.text)
+            adaptive_height:True
+    MDGridLayout:
+        cols:2
+        MDIcon:
+            icon:'comment-text-outline'
+            size_hint_x:.15
+        MDTextField:
+            max_text_length: 20
+            on_text: app.text_replace(self,20)
+            id:edit_hint
+            size_hint_y:1
+        MDIcon:
+            icon:'email'
+            size_hint_x:.15
+        MDTextField:
+            max_text_length: 20
+            on_text: app.text_replace(self,20)
+            id: edit_email
+            size_hint_y:1
+        MDIcon:
+            icon:'key'
+            size_hint_x:.15
+        MDTextField:
+            max_text_length: 20
+            on_text: app.text_replace(self,20)
+            id:edit_pass
+            size_hint_y:1
+        
+
+<Add_Credentials>
+    radius:[20,]
+    padding: ('0dp', '0dp', '0dp', '15dp')
+    orientation: 'vertical'
+    size_hint:1,None
+    height:app.w[1]/3.5
+    pos_hint:{'center_y':.5}
+    MDBoxLayout:
+        adaptive_height:True
+        size_hint_y:.15
+        MDLabel:
+            text:'Edit Details'
+            adaptive_height:True
+            theme_text_color:'Custom'
+            text_color:app.theme_cls.primary_color
+            pos_hint:{'center_y':.8}
+        MDIconButton:
+            icon:'plus-circle-outline'
+            on_press:
+                app.add_credentials_dialog.dismiss()
+                app.add_credentials(add_hint.text,add_email.text,add_pass.text)
+            adaptive_height:True
+    MDGridLayout:
+        cols:2
+        MDIcon:
+            icon:'comment-text-outline'
+            size_hint_x:.15
+        MDTextField:
+            required:True
+            max_text_length: 20
+            on_text: app.text_replace(self,20)
+            id:add_hint
+            hint_text:'Type Hint'
+            size_hint_y:1
+        MDIcon:
+            icon:'email'
+            size_hint_x:.15
+        MDTextField:
+            required:True
+            max_text_length: 20
+            on_text: app.text_replace(self,20)
+            id: add_email
+            hint_text:'Type Email'
+            size_hint_y:1
+        MDIcon:
+            icon:'key'
+            size_hint_x:.15
+        MDTextField:
+            required:True
+            max_text_length: 20
+            on_text: app.text_replace(self,20)
+            id:add_pass
+            hint_text:'Type Password'
+            size_hint_y:1
+        
+
+
+<Category_content>
+    orientation: "vertical"
+    spacing: "12dp"
+    size_hint_y: None
+    height: app.w[1]/2
+    MDGridLayout:
+        cols:1
+        spacing: '10dp'
+        MDTextField:
+            id:category_text
+            adaptive_height:True
+            max_text_length: 10
+            on_text: app.text_replace(self,10)
+            hint_text:'Type Category Name'
+            required:True
+        MDLabel:
+            text:'SELECT ICON'
+            theme_text_color:'Custom'
+            text_color:app.theme_cls.primary_color
+            adaptive_height:True
+        ScrollView:
+            MDBoxLayout:
+                orientation: 'vertical'
+                adaptive_height:True
+                OneLineIconListItem:
+                    text: "Google"
+                    on_release:
+                        app.selected_category=self.text
+                        category_text.text=self.text
+                    IconLeftWidget:
+                        icon: "google"
+                OneLineIconListItem:
+                    text: "Facebook"
+                    on_release:
+                        app.selected_category=self.text
+                        category_text.text=self.text
+                    IconLeftWidget:
+                        icon: "facebook"
+                OneLineIconListItem:
+                    text: "Yahoo"
+                    on_release:
+                        app.selected_category=self.text
+                        category_text.text=self.text
+                    IconLeftWidget:
+                        icon: "yahoo"
+                OneLineIconListItem:
+                    text: "Microsoft"
+                    on_release:
+                        app.selected_category=self.text
+                        category_text.text=self.text
+                    IconLeftWidget:
+                        icon: "microsoft"
+                OneLineIconListItem:
+                    text: "Other"
+                    on_release:
+                        app.selected_category=self.text
+                        category_text.text=self.text
+                    IconLeftWidget:
+                        icon: "heart"
+        MDBoxLayout:
+            adaptive_height:True
+            # md_bg_color:.2,.8,.1,1
+            AnchorLayout:
+                anchor_x:'right'
+            MDFlatButton:
+                text:'ADD'
+                adaptive_width:True
+                theme_text_color:'Custom'
+                text_color:app.theme_cls.primary_color
+                on_release:
+                    app.category_dialog.dismiss()
+                    app.add_category(category_text)
+            MDFlatButton:
+                text:'Cancel'
+                adaptive_width:True
+                theme_text_color:'Custom'
+                text_color:app.theme_cls.primary_color
+                on_release:app.category_dialog.dismiss()          
+
 
 MDBackdrop:
     id:back_drop
@@ -15,7 +222,6 @@ MDBackdrop:
             size_hint: 1,None
             height:root.height/2
             pos_hint:{'center_y':.7}
-
             elevation:30
             radius:[25,]
             padding:20
@@ -23,14 +229,14 @@ MDBackdrop:
             MDGridLayout:
                 cols:1
                 spacing:dp(10)
+                padding:20
                 MDBoxLayout:
                     adaptive_height:True
                     MDLabel:
-                        size_hint_x:None
-                        width:root.width/3
+                        size_hint_x:.8
                         text:'Dark Theme'
                         font_style:'Button'
-                        font_size:dp(20)
+                        font_size:sp(20)
                         
                     MDSwitch:
                         id: switch
@@ -43,6 +249,8 @@ MDBackdrop:
 
 
     MDBackdropFrontLayer:
+        id:front_layer
+        
         ShowPassword:
        
                         
@@ -50,6 +258,7 @@ MDBackdrop:
 
 <ShowPassword>
     name:'ShowPassword'
+    id:ShowPassword
     MDBottomNavigation:
         panel_color: app.theme_cls.bg_light
         
@@ -57,114 +266,85 @@ MDBackdrop:
             name: 'MainPage'
             text: 'Main Page'
             icon: 'home'
+            on_tab_press:
+                app.show_categories()
+                new_screen_manger.current='MainPage'
             
             # MDCard:
             #     md_bg_color:.2,.5,.1,1
             ScreenManager:
                 transition: RiseInTransition()
                 id:new_screen_manger
-                DetailsScreen:
                 MainPage:
+                DetailsScreen:
                 
 
         MDBottomNavigationItem:
             name: 'screen 2'
-            text: 'C++'
-            icon: 'language-cpp'
+            text: 'Favorites'
+            icon: 'heart-multiple-outline'
 
-            
-            MDLabel:
-                text: 'I programming of C++'
-                halign: 'center'
+            Screen:
+                MDBoxLayout:
+                    md_bg_color:app.theme_cls.bg_darkest    
+                    MDLabel:
+                        text: 'Something will come here'
+                        halign: 'center'
+                
 
         MDBottomNavigationItem:
             name: 'screen 3'
-            text: 'JS'
-            icon: 'language-javascript'
+            text: 'Devaloper'
+            icon: 'account-cowboy-hat'
 
             ProfileScreen:
 
 <MainPage>:
     id:MainPage 
     name:'MainPage'
-    MDBoxLayout:
-        MDCard:
-            md_bg_color:app.theme_cls.bg_darkest
-            orientation: 'vertical'
-            padding: ('15dp', '0dp', '15dp', '15dp')
-            spacing: dp(15)
-            MDBoxLayout:
-                size_hint:1,.15
-                orientation: 'vertical'
-                MDCard:
-                    radius:[25,]
-                    md_bg_color:app.theme_cls.bg_light
-                    elevation:25
-                    MDLabel:
-                        text:'Categories'
-                        halign:'center'
-                        theme_text_color:'Custom'
-                        text_color:app.theme_cls.primary_color
-                        font_name:'font/Austein.ttf'
-                        font_size:dp(48)
-                        
 
+    MDCard:
+        md_bg_color:app.theme_cls.bg_darkest
+        orientation: 'vertical'
+        padding: ('15dp', '0dp', '15dp', '15dp')
+        spacing: dp(10)
+        MDBoxLayout:
+            size_hint:1,.15
+            spacing:dp(5)
+            MDCard:
+                radius:[25,]
+                size_hint:.5,1
+                md_bg_color:app.theme_cls.bg_light
+                elevation:15
+              
+                MDLabel:
+                    text:'Categories'
+                    halign:'center'
+                    theme_text_color:'Custom'
+                    text_color:app.theme_cls.primary_color
+                    font_size:sp(45)
+                    
+            MDCard:
+                size_hint:.1,1
+                radius:[36,]
+                elevation:0
+                on_release:app.add_category_dialog()
+                MDIcon:
+                    icon:'plus-box-multiple'
+                    halign:'center'
+                    theme_text_color:'Custom'
+                    text_color:app.theme_cls.primary_color
+                    
+                    
+        ScrollView:
             MDGridLayout:
                 id: mainPageCard
                 cols:2
+                
+                row_default_height:130
+                adaptive_height:True
                 spacing: dp(15)
-                MDCard:
-                    md_bg_color:app.theme_cls.bg_light
-                    size_hint: .5,None
-                    elevation:15
-                    radius:dp(20)                 
-                    height:self.parent.height/3
-                    orientation: 'vertical'
-                    padding:dp(20)
-                    MDIcon:
-                        icon:'facebook'
-                        font_size:dp(100)
-                        halign:'center'
-                        size_hint: 1,.8
-                        theme_text_color:'Custom'
-                        text_color:app.theme_cls.primary_dark
-                        # pos_hint:{}
-                    MDSeparator:
-                    MDLabel:
-                        size_hint: 1,.2
-                        text:'Facebook'
-                        halign:'center'
-                        font_size:dp(20)
-                        theme_text_color:'Custom'
-                        text_color:app.theme_cls.primary_dark
-                        
-                        
-                        
-                MDCard:
-                    md_bg_color:app.theme_cls.bg_light
-                    size_hint: .5,None
-                    elevation:15
-                    radius:dp(20)                 
-                    height:self.parent.height/3
-                    orientation: 'vertical'
-                    padding:dp(20)
-                    on_release:root.manager.current = 'DetailsScreen'
-                    MDIcon:
-                        icon:'google'
-                        font_size:dp(100)
-                        halign:'center'
-                        size_hint: 1,.8
-                        theme_text_color:'Custom'
-                        text_color:app.theme_cls.primary_dark
-                        # pos_hint:{}
-                    MDSeparator:
-                    MDLabel:
-                        size_hint: 1,.2
-                        text:'Google'
-                        halign:'center'
-                        font_size:dp(20)
-                        theme_text_color:'Custom'
-                        text_color:app.theme_cls.primary_dark
+           
 
                          
 
@@ -180,7 +360,7 @@ MDBackdrop:
         orientation: 'vertical'
         
         ScrollView:
-            size_hint_y:1
+            # size_hint_y:1
             MDCard:
                 elevation:20
                 padding: ('20dp', '0dp', '20dp', '20dp')
@@ -190,64 +370,76 @@ MDBackdrop:
                 
                 MDGridLayout:
                     cols:1
-                    spacing:10
+                    spacing:15
+                    padding:[0,20]
+                    # pos_hint:{'top':1}
+                        
                     
                     MDBoxLayout:
                         spacing:15
+                        size_hint_y:None
+                        height:root.height/5
+                        
                         MDCard:
                             elevation:10
                             radius:[36,]
-                            pos_hint:{'top':1}
+                            
+                            # pos_hint:{'top':1}
                             elevation:20
+                            # size_hint_y:.5
                             FitImage:
                                 radius:[36,]
                                 source:'src/profile_pic/front.jpeg'
-                        MDBoxLayout:
-                            adaptive_height:True
-                            pos_hint:{'top':.8}
-                            orientation: 'vertical'
+                        # AnchorLayout:
+                        MDGridLayout:
+                            cols:1
+                            spacing:10
+                            padding: [0,25]
+                            # row_default_height:self.parent.height/5
+
                             MDLabel:
                                 theme_text_color:'Custom'
                                 text_color:app.theme_cls.primary_dark
                                 text:'M. Tariq Tahir'
                                 font_name: 'font/Chopsic-K6Dp.ttf'
-                                font_size:dp(30)
-                                adaptive_height:True
+                                font_size:sp(25)
+
                             MDLabel:
                                 theme_text_color:'Custom'
-                                
-                                adaptive_height:True
+                                # adaptive_height:True
                                 text:'\nSoftware Devaloper\n'
-                                font_size:dp(15)
+                                font_size:sp(15)
+                    # MDCard:
 
                     MDCard:
-                        # md_bg_color:1,1,1,1
                         elevation:15
                         radius:[20,]
                         padding: ('20dp', '0dp', '20dp', '20dp')
-                        # adaptive_height:True
                         size_hint_y:None
                         height: dp(160)
                         orientation: 'vertical'
-                        # spacing:10
+                        spacing:10
                         MDGridLayout:
                             cols:1
                             spacing: 5
                             padding: ('0dp', '20dp', '0dp', '0dp')
+
+                            
+
                             MDLabel:
                                 theme_text_color:'Custom'
                                 text_color:app.theme_cls.primary_dark
                                 text:'Skills'
                                 font_name: 'font/Chopsic-K6Dp.ttf'
-                                font_size:dp(20)
+                                font_size:sp(20)
                                 adaptive_height:True
                             MDLabel:
-                                theme_text_color:'Custom'
+                                
                                 text:'I can make Professional Looking Android Apps, Windows Software and Website etc..\nI can Work in Following Language \n -> Python  -> javascript \n -> Php -> VBA'
                                 adaptive_height:True
-                                font_size:dp(15)
+                                font_size:sp(15)
                     MDCard:
-                        # md_bg_color:1,1,1,1
+                        md_bg_color:1,1,1,1
                         elevation:15
                         radius:[20,]
                         padding: ('20dp', '0dp', '20dp', '20dp')
@@ -265,7 +457,7 @@ MDBackdrop:
                                 text_color:app.theme_cls.primary_dark
                                 text:'Phone / Email'
                                 font_name: 'font/Chopsic-K6Dp.ttf'
-                                font_size:dp(20)
+                                font_size:sp(20)
                                 adaptive_height:True
                         
                             MDGridLayout:
@@ -276,12 +468,12 @@ MDBackdrop:
                                     id:email
                                     text_color:app.theme_cls.primary_dark
                                     text:'tariqtahir43@gmail.com '
-                                    font_size:dp(15)
+                                    font_size:sp(15)
                                 MDIconButton:
                                     icon:'content-copy'
                                     on_release:
                                         Clipboard.copy(email.text)
-                                        app.snackbar_show(('Copied '+str(email.text)))
+                                        app.snackbar_show(email.text)
 
                                 MDIconButton:
                                     icon:'whatsapp'
@@ -289,40 +481,82 @@ MDBackdrop:
                                     id:phone
                                     text_color:app.theme_cls.primary_dark
                                     text:'0304 075 5464 '
-                                    font_size:dp(15)
+                                    font_size:sp(15)
                                 MDIconButton:
                                     icon:'content-copy'
                                     on_release:
                                         Clipboard.copy(phone.text)
-                                        app.snackbar_show(('Copied '+str(phone.text)))
-                                        # app.show_toast('Copied '+str(phone.text))
+                                        app.snackbar_show(phone.text)
+                                        
 
 <DetailsScreen>
     name:'DetailsScreen'
     MDCard:
+        orientation:'vertical'
         md_bg_color:app.theme_cls.bg_darkest
-        orientation: 'vertical'
-        size_hint_y:None
-        height:self.parent.height
-        # md_bg_color:.5,.2,.8,1
+        # spacing:dp(5)
+        MDBoxLayout:
+            size_hint_y:.2
+            padding: ('20dp', '10dp', '20dp', '20dp')
+            spacing:10
+            MDCard:
+                size_hint:.8,1
+                elevation:20
+                radius:[15,]
+                MDLabel:
+                    id: details_title
+                    text:'Credentials Details'
+                    halign:'center'
+                    theme_text_color:'Custom'
+                    text_color:app.theme_cls.primary_color
+                    font_size:sp(25)
+            MDCard:
+                elevation:0
+                size_hint:.15,1
+                radius:[36,]
+                AnchorLayout:
+                    MDIconButton:
+                        icon:'plus-box-multiple-outline'
+                        theme_text_color:'Custom'
+                        text_color:app.theme_cls.primary_color
+                        on_press:
+                            app.add_details_dialog()
+                        
+                   
         ScrollView:
             MDGridLayout:
                 cols:1
-                row_default_height:130
+                id:details
+                row_default_height:150
+
                 adaptive_height:True
-                padding: ('20dp', '15dp', '20dp', '20dp')
+                padding: ('20dp', '5dp', '20dp', '20dp')
                 spacing:10
 
                 MDCard:
-                    radius:[20]
-                    elevation:12
-                    padding:[20,10]
-                    
+                    radius:[20,]
+                    padding:20
                     orientation: 'vertical'
+                    MDBoxLayout:
+                        adaptive_height:True
+                        size_hint_y:.3
+                        MDLabel:
+                            text:'Hint Text'
+                            pos_hint:{'top':1}
+                            theme_text_color:'Custom'
+                            text_color:app.theme_cls.primary_color
+                            adaptive_height:True
+                        MDIconButton:
+                            icon:'circle-edit-outline'
+                            adaptive_height:True
+                            pos_hint:{'center_y':.8}
+                        MDIconButton:
+                            icon:'delete'
+                            adaptive_height:True
+                            pos_hint:{'center_y':.8}
+                    MDSeparator:
                     MDGridLayout:
                         cols:3
-                        
-                        size_hint_y:None
                         MDIcon:
                             icon:'email'
                             size_hint_x:.15
@@ -339,187 +573,3 @@ MDBackdrop:
                             text:'Abc@test.com'
                         MDIconButton:
                             icon:'content-copy'
-                            # pos_hint:{'center_y':.5}
-                MDCard:
-                    radius:[20]
-                    elevation:12
-                    padding:[20,10]
-                    orientation: 'vertical'
-                    MDGridLayout:
-                        cols:3
-                        
-                        size_hint_y:None
-                        MDIcon:
-                            icon:'email'
-                            size_hint_x:.15
-                        MDLabel:
-                            text:'Abc@test.com'
-                        MDIconButton:
-                            icon:'content-copy'
-
-
-                        MDIcon:
-                            icon:'key'
-                            size_hint_x:.15
-                        MDLabel:
-                            text:'Abc@test.com'
-                        MDIconButton:
-                            icon:'content-copy'
-                            # pos_hint:{'center_y':.5}
-                MDCard:
-                    radius:[20]
-                    elevation:12
-                    padding:[20,10]
-                    orientation: 'vertical'
-                    MDGridLayout:
-                        cols:3
-                        
-                        size_hint_y:None
-                        MDIcon:
-                            icon:'email'
-                            size_hint_x:.15
-                        MDLabel:
-                            text:'Abc@test.com'
-                        MDIconButton:
-                            icon:'content-copy'
-
-
-                        MDIcon:
-                            icon:'key'
-                            size_hint_x:.15
-                        MDLabel:
-                            text:'Abc@test.com'
-                        MDIconButton:
-                            icon:'content-copy'
-                            # pos_hint:{'center_y':.5}
-                MDCard:
-                    radius:[20]
-                    elevation:12
-                    padding:[20,10]
-                    orientation: 'vertical'
-                    MDGridLayout:
-                        cols:3
-                        
-                        size_hint_y:None
-                        MDIcon:
-                            icon:'email'
-                            size_hint_x:.15
-                        MDLabel:
-                            text:'Abc@test.com'
-                        MDIconButton:
-                            icon:'content-copy'
-
-
-                        MDIcon:
-                            icon:'key'
-                            size_hint_x:.15
-                        MDLabel:
-                            text:'Abc@test.com'
-                        MDIconButton:
-                            icon:'content-copy'
-                            # pos_hint:{'center_y':.5}
-                MDCard:
-                    radius:[20]
-                    elevation:12
-                    padding:[20,10]
-                    orientation: 'vertical'
-                    MDGridLayout:
-                        cols:3
-                        
-                        size_hint_y:None
-                        MDIcon:
-                            icon:'email'
-                            size_hint_x:.15
-                        MDLabel:
-                            text:'Abc@test.com'
-                        MDIconButton:
-                            icon:'content-copy'
-
-
-                        MDIcon:
-                            icon:'key'
-                            size_hint_x:.15
-                        MDLabel:
-                            text:'Abc@test.com'
-                        MDIconButton:
-                            icon:'content-copy'
-                            # pos_hint:{'center_y':.5}
-                MDCard:
-                    radius:[20]
-                    elevation:12
-                    padding:[20,10]
-                    orientation: 'vertical'
-                    MDGridLayout:
-                        cols:3
-                        
-                        size_hint_y:None
-                        MDIcon:
-                            icon:'email'
-                            size_hint_x:.15
-                        MDLabel:
-                            text:'Abc@test.com'
-                        MDIconButton:
-                            icon:'content-copy'
-
-
-                        MDIcon:
-                            icon:'key'
-                            size_hint_x:.15
-                        MDLabel:
-                            text:'Abc@test.com'
-                        MDIconButton:
-                            icon:'content-copy'
-                            # pos_hint:{'center_y':.5}
-                MDCard:
-                    radius:[20]
-                    elevation:12
-                    padding:[20,10]
-                    orientation: 'vertical'
-                    MDGridLayout:
-                        cols:3
-                        
-                        size_hint_y:None
-                        MDIcon:
-                            icon:'email'
-                            size_hint_x:.15
-                        MDLabel:
-                            text:'Abc@test.com'
-                        MDIconButton:
-                            icon:'content-copy'
-
-
-                        MDIcon:
-                            icon:'key'
-                            size_hint_x:.15
-                        MDLabel:
-                            text:'Abc@test.com'
-                        MDIconButton:
-                            icon:'content-copy'
-                            # pos_hint:{'center_y':.5}
-                MDCard:
-                    radius:[20]
-                    elevation:12
-                    padding:[20,10]
-                    orientation: 'vertical'
-                    MDGridLayout:
-                        cols:3
-                        
-                        size_hint_y:None
-                        MDIcon:
-                            icon:'email'
-                            size_hint_x:.15
-                        MDLabel:
-                            text:'Abc@test.com'
-                        MDIconButton:
-                            icon:'content-copy'
-
-
-                        MDIcon:
-                            icon:'key'
-                            size_hint_x:.15
-                        MDLabel:
-                            text:'Abc@test.com'
-                        MDIconButton:
-                            icon:'content-copy'
-                            # pos_hint:{'center_y':.5}
-                

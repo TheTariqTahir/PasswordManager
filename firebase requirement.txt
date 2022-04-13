@@ -1,0 +1,1 @@
+ython3,kivy==2.1.0,kivymd==0.104.2,pyrebase,cryptography,wrapt,deprecated,requests==2.21.0, urllib3, chardet, certifi, idna,gcloud,, oauth2client, requests-toolbelt, protobuf_cpp, python-jwt, pycryptodome, httplib2, pyparsing, pyasn1, pyasn1_modules, rsa,jwcrypto,pillow

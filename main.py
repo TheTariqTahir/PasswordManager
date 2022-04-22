@@ -59,7 +59,7 @@ class Main(MDApp):
     def build(self):
         #self.w= Window.size 
         self.w= Window.size = 350,600
-        self.theme_cls.primary_palette = "Indigo"
+        self.theme_cls.primary_palette = "Teal"
         self.theme_cls.primary_hue = "A700"
         self.theme_cls.theme_style = "Light"
         
@@ -71,7 +71,7 @@ class Main(MDApp):
         self.builder = Builder.load_string(KV)
         # self.builder = Builder.load_file('kv_file.kv')
         # self.screen_manager = self.builder.ids.screen_manager
-        
+        # print(self.screen_manager)
         self.selected_category=''
         self.selected_details={}
         self.user = 'User1'
@@ -92,13 +92,21 @@ class Main(MDApp):
         
         return self.builder
 
+    def change_theme_color(self,color,hue):
+        self.theme_cls.primary_palette = color
+        self.theme_cls.primary_hue = hue
+
     def change_theme(self):
         if self.theme_cls.theme_style =="Dark":
             self.theme_cls.theme_style = "Light"
-            self.theme_cls.primary_hue = "900"
+            self.theme_cls.primary_palette = 'Red'
+            # self.builder.ids.toolbar.md_bg_color=self.theme_cls.bg_normal
+            
         else:
             self.theme_cls.theme_style = "Dark"
-            self.theme_cls.primary_hue = "A100"
+            self.theme_cls.primary_palette = 'Orange'
+            # self.builder.ids.toolbar.md_bg_color=self.theme_cls.bg_normal
+            
             
         # async def get_data():
         #     task = asyncio.create_task(self.show_categories())
@@ -457,12 +465,6 @@ class Main(MDApp):
         
         with open(self.path_to_kv_file,"w+") as kv_file:
             kv_file.write(text)
-  
-    def change_theme(self):
-        if self.theme_cls.theme_style == "Light":
-            self.theme_cls.theme_style = "Dark"
-        else:
-            self.theme_cls.theme_style = "Light"
 
 
 

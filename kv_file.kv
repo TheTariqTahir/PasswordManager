@@ -207,37 +207,33 @@
                 on_release:app.category_dialog.dismiss()          
 
 
-MDNavigationLayout:
 
-    ScreenManager:
-        id:root_screen_manager
-        Screen:
 
-            BoxLayout:
-                orientation: 'vertical'
-                padding: ('0dp', '0dp', '0dp', '10dp')
-                MDToolbar:
-                    # elevation: 10
-                    left_action_items: [['theme-light-dark', lambda x: app.change_theme()]]
-                    right_action_items: [['screw-machine-round-top', lambda x: nav_drawer.set_state("open")]]
-                    
-                    md_bg_color: app.theme_cls.bg_normal
-                    size_hint_y:.08 
-                    # theme_text_color:'Secondary'
-                    # specific_text_color:app.theme_cls.bg_darkest
-                    specific_text_color:.7,.7,.7,1
+ScreenManager:
+    id:root_screen_manager
+    Screen:
 
-                ScreenManager:
-                    id:screen_manager
-                    MainPage:
-                    DetailsPage:
-                    
+        BoxLayout:
+            orientation: 'vertical'
+            padding: ('0dp', '0dp', '0dp', '10dp')
+            MDToolbar:
+                id:toolbar
+                # elevation: 10
+                left_action_items: [['theme-light-dark', lambda x: app.change_theme()]]
+                right_action_items: [['screw-machine-round-top', lambda x:print('setting clicked')]]
+                md_bg_color: app.theme_cls.bg_normal
+                size_hint_y:.08 
+                # theme_text_color:'Secondary'
+                # specific_text_color:app.theme_cls.bg_darkest
+                specific_text_color:.7,.7,.7,1
+
+            ScreenManager:
+                id:screen_manager
+                DetailsPage:
+                # MainPage:
                 
-                Bottom_nav:
-
-
-    MDNavigationDrawer:
-        id: nav_drawer
+            
+            Bottom_nav:
 
 
 
@@ -292,21 +288,24 @@ MDNavigationLayout:
                         spacing:dp(6)
                         on_press: app.test()
                         md_bg_color:app.theme_cls.bg_light
-                        MDCard:
-                            md_bg_color:app.theme_cls.primary_color
-                            size_hint:.45,.6
-                            pos_hint:{'center_y':.5}
-                            radius:dp(10)
-                            elevation:0
+                        # MDCard:
+                        #     md_bg_color:app.theme_cls.primary_color
+                        #     size_hint:.45,.6
+                        #     pos_hint:{'center_y':.5}
+                        #     radius:dp(10)
+                        #     elevation:0
                             
-                            MDLabel:
-                                text:'F'
-                                halign:'center'
-                                font_name:font_name
-                                # font_style:'H5'
-                                font_size:sp(22)
-                                theme_text_color:'Custom'
-                                text_color:1,1,1,1
+                        MDIcon:
+                            size_hint:.45,.65
+                            icon:'facebook'
+                            halign:'center'
+                            pos_hint:{'center_y':.5}
+                            radius:dp(8)
+                            
+                            font_size:sp(20)
+                            md_bg_color:app.theme_cls.primary_color
+                            theme_text_color:'Custom'
+                            text_color:1,1,1,1
                             
                         MDLabel:
                             text:'Facebook'
@@ -318,29 +317,675 @@ MDNavigationLayout:
                         pos_hint: { 'center_y':.5 }
                         font_size:sp(18)
                         on_press:print('deleted')
-
+                CardMain:
+                    height:root.height/8
+                    padding: dp(8)    
+                    MDCard:
+                        size_hint_x:.8
+                        elevation:0
+                        spacing:dp(6)
+                        on_press: app.test()
+                        md_bg_color:app.theme_cls.bg_light
+                        # MDCard:
+                        #     md_bg_color:app.theme_cls.primary_color
+                        #     size_hint:.45,.6
+                        #     pos_hint:{'center_y':.5}
+                        #     radius:dp(10)
+                        #     elevation:0
+                            
+                        MDIcon:
+                            size_hint:.45,.65
+                            icon:'facebook'
+                            halign:'center'
+                            pos_hint:{'center_y':.5}
+                            radius:dp(8)
+                            
+                            font_size:sp(20)
+                            md_bg_color:app.theme_cls.primary_color
+                            theme_text_color:'Custom'
+                            text_color:1,1,1,1
+                            
+                        MDLabel:
+                            text:'Facebook'
+                            font_name:font_name
+                            font_size:sp(12)
+                    ClickableMDIcon:
+                        icon:'delete-outline'
+                        size_hint:.15,.4
+                        pos_hint: { 'center_y':.5 }
+                        font_size:sp(18)
+                        on_press:print('deleted')
+                CardMain:
+                    height:root.height/8
+                    padding: dp(8)    
+                    MDCard:
+                        size_hint_x:.8
+                        elevation:0
+                        spacing:dp(6)
+                        on_press: app.test()
+                        md_bg_color:app.theme_cls.bg_light
+                        # MDCard:
+                        #     md_bg_color:app.theme_cls.primary_color
+                        #     size_hint:.45,.6
+                        #     pos_hint:{'center_y':.5}
+                        #     radius:dp(10)
+                        #     elevation:0
+                            
+                        MDIcon:
+                            size_hint:.45,.65
+                            icon:'facebook'
+                            halign:'center'
+                            pos_hint:{'center_y':.5}
+                            radius:dp(8)
+                            
+                            font_size:sp(20)
+                            md_bg_color:app.theme_cls.primary_color
+                            theme_text_color:'Custom'
+                            text_color:1,1,1,1
+                            
+                        MDLabel:
+                            text:'Facebook'
+                            font_name:font_name
+                            font_size:sp(12)
+                    ClickableMDIcon:
+                        icon:'delete-outline'
+                        size_hint:.15,.4
+                        pos_hint: { 'center_y':.5 }
+                        font_size:sp(18)
+                        on_press:print('deleted')
+                CardMain:
+                    height:root.height/8
+                    padding: dp(8)    
+                    MDCard:
+                        size_hint_x:.8
+                        elevation:0
+                        spacing:dp(6)
+                        on_press: app.test()
+                        md_bg_color:app.theme_cls.bg_light
+                        # MDCard:
+                        #     md_bg_color:app.theme_cls.primary_color
+                        #     size_hint:.45,.6
+                        #     pos_hint:{'center_y':.5}
+                        #     radius:dp(10)
+                        #     elevation:0
+                            
+                        MDIcon:
+                            size_hint:.45,.65
+                            icon:'facebook'
+                            halign:'center'
+                            pos_hint:{'center_y':.5}
+                            radius:dp(8)
+                            
+                            font_size:sp(20)
+                            md_bg_color:app.theme_cls.primary_color
+                            theme_text_color:'Custom'
+                            text_color:1,1,1,1
+                            
+                        MDLabel:
+                            text:'Facebook'
+                            font_name:font_name
+                            font_size:sp(12)
+                    ClickableMDIcon:
+                        icon:'delete-outline'
+                        size_hint:.15,.4
+                        pos_hint: { 'center_y':.5 }
+                        font_size:sp(18)
+                        on_press:print('deleted')
+                CardMain:
+                    height:root.height/8
+                    padding: dp(8)    
+                    MDCard:
+                        size_hint_x:.8
+                        elevation:0
+                        spacing:dp(6)
+                        on_press: app.test()
+                        md_bg_color:app.theme_cls.bg_light
+                        # MDCard:
+                        #     md_bg_color:app.theme_cls.primary_color
+                        #     size_hint:.45,.6
+                        #     pos_hint:{'center_y':.5}
+                        #     radius:dp(10)
+                        #     elevation:0
+                            
+                        MDIcon:
+                            size_hint:.45,.65
+                            icon:'facebook'
+                            halign:'center'
+                            pos_hint:{'center_y':.5}
+                            radius:dp(8)
+                            
+                            font_size:sp(20)
+                            md_bg_color:app.theme_cls.primary_color
+                            theme_text_color:'Custom'
+                            text_color:1,1,1,1
+                            
+                        MDLabel:
+                            text:'Facebook'
+                            font_name:font_name
+                            font_size:sp(12)
+                    ClickableMDIcon:
+                        icon:'delete-outline'
+                        size_hint:.15,.4
+                        pos_hint: { 'center_y':.5 }
+                        font_size:sp(18)
+                        on_press:print('deleted')
+                CardMain:
+                    height:root.height/8
+                    padding: dp(8)    
+                    MDCard:
+                        size_hint_x:.8
+                        elevation:0
+                        spacing:dp(6)
+                        on_press: app.test()
+                        md_bg_color:app.theme_cls.bg_light
+                        # MDCard:
+                        #     md_bg_color:app.theme_cls.primary_color
+                        #     size_hint:.45,.6
+                        #     pos_hint:{'center_y':.5}
+                        #     radius:dp(10)
+                        #     elevation:0
+                            
+                        MDIcon:
+                            size_hint:.45,.65
+                            icon:'facebook'
+                            halign:'center'
+                            pos_hint:{'center_y':.5}
+                            radius:dp(8)
+                            
+                            font_size:sp(20)
+                            md_bg_color:app.theme_cls.primary_color
+                            theme_text_color:'Custom'
+                            text_color:1,1,1,1
+                            
+                        MDLabel:
+                            text:'Facebook'
+                            font_name:font_name
+                            font_size:sp(12)
+                    ClickableMDIcon:
+                        icon:'delete-outline'
+                        size_hint:.15,.4
+                        pos_hint: { 'center_y':.5 }
+                        font_size:sp(18)
+                        on_press:print('deleted')
+                CardMain:
+                    height:root.height/8
+                    padding: dp(8)    
+                    MDCard:
+                        size_hint_x:.8
+                        elevation:0
+                        spacing:dp(6)
+                        on_press: app.test()
+                        md_bg_color:app.theme_cls.bg_light
+                        # MDCard:
+                        #     md_bg_color:app.theme_cls.primary_color
+                        #     size_hint:.45,.6
+                        #     pos_hint:{'center_y':.5}
+                        #     radius:dp(10)
+                        #     elevation:0
+                            
+                        MDIcon:
+                            size_hint:.45,.65
+                            icon:'facebook'
+                            halign:'center'
+                            pos_hint:{'center_y':.5}
+                            radius:dp(8)
+                            
+                            font_size:sp(20)
+                            md_bg_color:app.theme_cls.primary_color
+                            theme_text_color:'Custom'
+                            text_color:1,1,1,1
+                            
+                        MDLabel:
+                            text:'Facebook'
+                            font_name:font_name
+                            font_size:sp(12)
+                    ClickableMDIcon:
+                        icon:'delete-outline'
+                        size_hint:.15,.4
+                        pos_hint: { 'center_y':.5 }
+                        font_size:sp(18)
+                        on_press:print('deleted')
+                CardMain:
+                    height:root.height/8
+                    padding: dp(8)    
+                    MDCard:
+                        size_hint_x:.8
+                        elevation:0
+                        spacing:dp(6)
+                        on_press: app.test()
+                        md_bg_color:app.theme_cls.bg_light
+                        # MDCard:
+                        #     md_bg_color:app.theme_cls.primary_color
+                        #     size_hint:.45,.6
+                        #     pos_hint:{'center_y':.5}
+                        #     radius:dp(10)
+                        #     elevation:0
+                            
+                        MDIcon:
+                            size_hint:.45,.65
+                            icon:'facebook'
+                            halign:'center'
+                            pos_hint:{'center_y':.5}
+                            radius:dp(8)
+                            
+                            font_size:sp(20)
+                            md_bg_color:app.theme_cls.primary_color
+                            theme_text_color:'Custom'
+                            text_color:1,1,1,1
+                            
+                        MDLabel:
+                            text:'Facebook'
+                            font_name:font_name
+                            font_size:sp(12)
+                    ClickableMDIcon:
+                        icon:'delete-outline'
+                        size_hint:.15,.4
+                        pos_hint: { 'center_y':.5 }
+                        font_size:sp(18)
+                        on_press:print('deleted')
+                CardMain:
+                    height:root.height/8
+                    padding: dp(8)    
+                    MDCard:
+                        size_hint_x:.8
+                        elevation:0
+                        spacing:dp(6)
+                        on_press: app.test()
+                        md_bg_color:app.theme_cls.bg_light
+                        # MDCard:
+                        #     md_bg_color:app.theme_cls.primary_color
+                        #     size_hint:.45,.6
+                        #     pos_hint:{'center_y':.5}
+                        #     radius:dp(10)
+                        #     elevation:0
+                            
+                        MDIcon:
+                            size_hint:.45,.65
+                            icon:'facebook'
+                            halign:'center'
+                            pos_hint:{'center_y':.5}
+                            radius:dp(8)
+                            
+                            font_size:sp(20)
+                            md_bg_color:app.theme_cls.primary_color
+                            theme_text_color:'Custom'
+                            text_color:1,1,1,1
+                            
+                        MDLabel:
+                            text:'Facebook'
+                            font_name:font_name
+                            font_size:sp(12)
+                    ClickableMDIcon:
+                        icon:'delete-outline'
+                        size_hint:.15,.4
+                        pos_hint: { 'center_y':.5 }
+                        font_size:sp(18)
+                        on_press:print('deleted')
+                CardMain:
+                    height:root.height/8
+                    padding: dp(8)    
+                    MDCard:
+                        size_hint_x:.8
+                        elevation:0
+                        spacing:dp(6)
+                        on_press: app.test()
+                        md_bg_color:app.theme_cls.bg_light
+                        # MDCard:
+                        #     md_bg_color:app.theme_cls.primary_color
+                        #     size_hint:.45,.6
+                        #     pos_hint:{'center_y':.5}
+                        #     radius:dp(10)
+                        #     elevation:0
+                            
+                        MDIcon:
+                            size_hint:.45,.65
+                            icon:'facebook'
+                            halign:'center'
+                            pos_hint:{'center_y':.5}
+                            radius:dp(8)
+                            
+                            font_size:sp(20)
+                            md_bg_color:app.theme_cls.primary_color
+                            theme_text_color:'Custom'
+                            text_color:1,1,1,1
+                            
+                        MDLabel:
+                            text:'Facebook'
+                            font_name:font_name
+                            font_size:sp(12)
+                    ClickableMDIcon:
+                        icon:'delete-outline'
+                        size_hint:.15,.4
+                        pos_hint: { 'center_y':.5 }
+                        font_size:sp(18)
+                        on_press:print('deleted')
+                CardMain:
+                    height:root.height/8
+                    padding: dp(8)    
+                    MDCard:
+                        size_hint_x:.8
+                        elevation:0
+                        spacing:dp(6)
+                        on_press: app.test()
+                        md_bg_color:app.theme_cls.bg_light
+                        # MDCard:
+                        #     md_bg_color:app.theme_cls.primary_color
+                        #     size_hint:.45,.6
+                        #     pos_hint:{'center_y':.5}
+                        #     radius:dp(10)
+                        #     elevation:0
+                            
+                        MDIcon:
+                            size_hint:.45,.65
+                            icon:'facebook'
+                            halign:'center'
+                            pos_hint:{'center_y':.5}
+                            radius:dp(8)
+                            
+                            font_size:sp(20)
+                            md_bg_color:app.theme_cls.primary_color
+                            theme_text_color:'Custom'
+                            text_color:1,1,1,1
+                            
+                        MDLabel:
+                            text:'Facebook'
+                            font_name:font_name
+                            font_size:sp(12)
+                    ClickableMDIcon:
+                        icon:'delete-outline'
+                        size_hint:.15,.4
+                        pos_hint: { 'center_y':.5 }
+                        font_size:sp(18)
+                        on_press:print('deleted')
+                CardMain:
+                    height:root.height/8
+                    padding: dp(8)    
+                    MDCard:
+                        size_hint_x:.8
+                        elevation:0
+                        spacing:dp(6)
+                        on_press: app.test()
+                        md_bg_color:app.theme_cls.bg_light
+                        # MDCard:
+                        #     md_bg_color:app.theme_cls.primary_color
+                        #     size_hint:.45,.6
+                        #     pos_hint:{'center_y':.5}
+                        #     radius:dp(10)
+                        #     elevation:0
+                            
+                        MDIcon:
+                            size_hint:.45,.65
+                            icon:'facebook'
+                            halign:'center'
+                            pos_hint:{'center_y':.5}
+                            radius:dp(8)
+                            
+                            font_size:sp(20)
+                            md_bg_color:app.theme_cls.primary_color
+                            theme_text_color:'Custom'
+                            text_color:1,1,1,1
+                            
+                        MDLabel:
+                            text:'Facebook'
+                            font_name:font_name
+                            font_size:sp(12)
+                    ClickableMDIcon:
+                        icon:'delete-outline'
+                        size_hint:.15,.4
+                        pos_hint: { 'center_y':.5 }
+                        font_size:sp(18)
+                        on_press:print('deleted')
+                CardMain:
+                    height:root.height/8
+                    padding: dp(8)    
+                    MDCard:
+                        size_hint_x:.8
+                        elevation:0
+                        spacing:dp(6)
+                        on_press: app.test()
+                        md_bg_color:app.theme_cls.bg_light
+                        # MDCard:
+                        #     md_bg_color:app.theme_cls.primary_color
+                        #     size_hint:.45,.6
+                        #     pos_hint:{'center_y':.5}
+                        #     radius:dp(10)
+                        #     elevation:0
+                            
+                        MDIcon:
+                            size_hint:.45,.65
+                            icon:'facebook'
+                            halign:'center'
+                            pos_hint:{'center_y':.5}
+                            radius:dp(8)
+                            
+                            font_size:sp(20)
+                            md_bg_color:app.theme_cls.primary_color
+                            theme_text_color:'Custom'
+                            text_color:1,1,1,1
+                            
+                        MDLabel:
+                            text:'Facebook'
+                            font_name:font_name
+                            font_size:sp(12)
+                    ClickableMDIcon:
+                        icon:'delete-outline'
+                        size_hint:.15,.4
+                        pos_hint: { 'center_y':.5 }
+                        font_size:sp(18)
+                        on_press:print('deleted')
+                CardMain:
+                    height:root.height/8
+                    padding: dp(8)    
+                    MDCard:
+                        size_hint_x:.8
+                        elevation:0
+                        spacing:dp(6)
+                        on_press: app.test()
+                        md_bg_color:app.theme_cls.bg_light
+                        # MDCard:
+                        #     md_bg_color:app.theme_cls.primary_color
+                        #     size_hint:.45,.6
+                        #     pos_hint:{'center_y':.5}
+                        #     radius:dp(10)
+                        #     elevation:0
+                            
+                        MDIcon:
+                            size_hint:.45,.65
+                            icon:'facebook'
+                            halign:'center'
+                            pos_hint:{'center_y':.5}
+                            radius:dp(8)
+                            
+                            font_size:sp(20)
+                            md_bg_color:app.theme_cls.primary_color
+                            theme_text_color:'Custom'
+                            text_color:1,1,1,1
+                            
+                        MDLabel:
+                            text:'Facebook'
+                            font_name:font_name
+                            font_size:sp(12)
+                    ClickableMDIcon:
+                        icon:'delete-outline'
+                        size_hint:.15,.4
+                        pos_hint: { 'center_y':.5 }
+                        font_size:sp(18)
+                        on_press:print('deleted')
+                CardMain:
+                    height:root.height/8
+                    padding: dp(8)    
+                    MDCard:
+                        size_hint_x:.8
+                        elevation:0
+                        spacing:dp(6)
+                        on_press: app.test()
+                        md_bg_color:app.theme_cls.bg_light
+                        # MDCard:
+                        #     md_bg_color:app.theme_cls.primary_color
+                        #     size_hint:.45,.6
+                        #     pos_hint:{'center_y':.5}
+                        #     radius:dp(10)
+                        #     elevation:0
+                            
+                        MDIcon:
+                            size_hint:.45,.65
+                            icon:'facebook'
+                            halign:'center'
+                            pos_hint:{'center_y':.5}
+                            radius:dp(8)
+                            
+                            font_size:sp(20)
+                            md_bg_color:app.theme_cls.primary_color
+                            theme_text_color:'Custom'
+                            text_color:1,1,1,1
+                            
+                        MDLabel:
+                            text:'Facebook'
+                            font_name:font_name
+                            font_size:sp(12)
+                    ClickableMDIcon:
+                        icon:'delete-outline'
+                        size_hint:.15,.4
+                        pos_hint: { 'center_y':.5 }
+                        font_size:sp(18)
+                        on_press:print('deleted')
+                CardMain:
+                    height:root.height/8
+                    padding: dp(8)    
+                    MDCard:
+                        size_hint_x:.8
+                        elevation:0
+                        spacing:dp(6)
+                        on_press: app.test()
+                        md_bg_color:app.theme_cls.bg_light
+                        # MDCard:
+                        #     md_bg_color:app.theme_cls.primary_color
+                        #     size_hint:.45,.6
+                        #     pos_hint:{'center_y':.5}
+                        #     radius:dp(10)
+                        #     elevation:0
+                            
+                        MDIcon:
+                            size_hint:.45,.65
+                            icon:'facebook'
+                            halign:'center'
+                            pos_hint:{'center_y':.5}
+                            radius:dp(8)
+                            
+                            font_size:sp(20)
+                            md_bg_color:app.theme_cls.primary_color
+                            theme_text_color:'Custom'
+                            text_color:1,1,1,1
+                            
+                        MDLabel:
+                            text:'Facebook'
+                            font_name:font_name
+                            font_size:sp(12)
+                    ClickableMDIcon:
+                        icon:'delete-outline'
+                        size_hint:.15,.4
+                        pos_hint: { 'center_y':.5 }
+                        font_size:sp(18)
+                        on_press:print('deleted')
+                CardMain:
+                    height:root.height/8
+                    padding: dp(8)    
+                    MDCard:
+                        size_hint_x:.8
+                        elevation:0
+                        spacing:dp(6)
+                        on_press: app.test()
+                        md_bg_color:app.theme_cls.bg_light
+                        # MDCard:
+                        #     md_bg_color:app.theme_cls.primary_color
+                        #     size_hint:.45,.6
+                        #     pos_hint:{'center_y':.5}
+                        #     radius:dp(10)
+                        #     elevation:0
+                            
+                        MDIcon:
+                            size_hint:.45,.65
+                            icon:'facebook'
+                            halign:'center'
+                            pos_hint:{'center_y':.5}
+                            radius:dp(8)
+                            
+                            font_size:sp(20)
+                            md_bg_color:app.theme_cls.primary_color
+                            theme_text_color:'Custom'
+                            text_color:1,1,1,1
+                            
+                        MDLabel:
+                            text:'Facebook'
+                            font_name:font_name
+                            font_size:sp(12)
+                    ClickableMDIcon:
+                        icon:'delete-outline'
+                        size_hint:.15,.4
+                        pos_hint: { 'center_y':.5 }
+                        font_size:sp(18)
+                        on_press:print('deleted')
+   
                         
-                CardMain:
-                    height:root.height/8
-                CardMain:
-                    height:root.height/8
-                CardMain:
-                    height:root.height/8
-                CardMain:
-                    height:root.height/8
-                CardMain:
-                    height:root.height/8
-                CardMain:
-                    height:root.height/8
-                CardMain:
-                    height:root.height/8
-        
+
+<MDCardDetails@MDCard>:
+    size_hint_y:None
+    height:dp(app.w[1]/4.5)
+    elevation:dp(20)
+    radius:dp(20)
+
 <DetailsPage@Screen>
     name:'DetailsPage'
-    
+    MDBoxLayout:
+        orientation: 'vertical'
+        # padding: ('20dp', '0dp', '20dp', '0dp')
+        MDBoxLayout:
+            size_hint_y:.1   
+            padding:dp(25),dp(0)     
+            # padding:10
+            MDLabel:
+                # md_bg_color: .2,.2,.2,1
+                text:'Categories'
+                theme_text_color:'Custom'
+                text_color:app.theme_cls.primary_color
+                font_name:font_name
+                font_size:sp(30)
 
+            MDCard:
+                size_hint_x: .5
+                elevation:0
+                on_press: app.add_category_dialog()
+                md_bg_color:app.theme_cls.bg_normal
+                MDIcon:
+                    md_bg_color:app.theme_cls.bg_normal
+                    icon:'plus-box-multiple-outline'
+                    halign:'right'
+                    font_size:sp(30)
+                    theme_text_color:'Secondary'
+        ScrollView:
+            MDGridLayout:
+                id:Main_page
+                padding:dp(20),dp(10)
+                cols:1
+                spacing:dp(10)
+                row_default_height:10
+                adaptive_height:True
 
+                MDCardDetails:
+                    AnchorLayout:
+                        anchor_x:'right'
+                        anchor_y: 'top'
+                        MDCard:
+                            # md_bg_color:.5,.2,.5,1
+                            radius:dp(20)
+                            size_hint:.18,.2
+                            
+                            MDIcon:
+                                icon:'circle-edit-outline'
+                                halign:'center'
+                                font_size:sp(20)
 
+                
 
 
 
@@ -364,15 +1009,19 @@ MDNavigationLayout:
     elevation:0
     radius:dp(15)
     
-<Bottom_nav@MDBoxLayout>
+<Bottom_nav@BoxLayout>
+    id:bottom_nav
     size_hint_y:.1
     spacing: dp(50)
+    radius:dp(20)
+    # md_bg_color:app.theme_cls.primary_color
     md_bg_color: app.theme_cls.bg_normal
     padding: dp(45),6
     
     MDCardBottom:
         # AnchorLayout:
         md_bg_color:app.theme_cls.primary_color
+        on_press:app.change_theme_color('Teal','400')
         MDIcon:
             icon:'home'
             halign:'center'

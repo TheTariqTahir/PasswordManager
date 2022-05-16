@@ -21,6 +21,23 @@ firebase=pyrebase.initialize_app(firebaseConfig)
 auth2 = firebase.auth()
 db = firebase.database()
 
+# data = db.child('Users').child('test').child('Fav').push({'test':'daf'})
+
+data ={'Category': 'facebook', 'Email': 'abc@example.com', 'Hint': 'example hint', 'Password': 'examplepassword', 'key': '2022-05-16 19:15:29.660340'}
+get_fav= db.child("Users").child('test').child('Fav').get()
+
+
+for i in get_fav.each():
+    item = i.val()
+    if item['key']==data['key']:
+        print('match')
+        break
+    else:
+        db.child("Users").child('test').child('Fav').push(data)
+    
+
+
+
 # user = (auth.get_user_by_email(email='a@b.com'))
 
 # email=input('Enter Email: ')
@@ -53,19 +70,19 @@ db = firebase.database()
 # auth.delete_user(uid='abc')
 # email = 'a@b.com'
 # password='abc123'
-email = 'thetariqtahir43@gmail.com'
-password='rspucnrmpa'
+# email = 'thetariqtahir43@gmail.com'
+# password='rspucnrmpa'
 
-try:
-    user = auth2.sign_in_with_email_and_password(email=email,password=password)
-    print(user['localId'])
-    # for i in user:
-    #     print(i)
-except Exception as e:
-    test =json.loads(e.args[1])['error']['errors'][0]
-    reason =test['reason']
-    message =test['message']
-    print(reason,message)
+# try:
+#     user = auth2.sign_in_with_email_and_password(email=email,password=password)
+#     print(user['localId'])
+#     # for i in user:
+#     #     print(i)
+# except Exception as e:
+#     test =json.loads(e.args[1])['error']['errors'][0]
+#     reason =test['reason']
+#     message =test['message']
+#     print(reason,message)
 
     
 

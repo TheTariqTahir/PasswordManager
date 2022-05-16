@@ -243,23 +243,24 @@ class Main(MDApp):
                         }
                         )
                     
+                    import time
                     now=datetime.now()
                     db.child('Users').child(self.user).child('Categories').child('facebook').child('items').push(
                          {'Email': 'abc@example.com', 'Password': 'examplepassword', 'Hint': 'example hint', 'Category': 'facebook', 'key': str(now)})
                     db.child('Users').child(self.user).child('Categories').child('facebook').child(
                                 'info').set({'icon': 'facebook'})
-                         
+                    time.sleep(.5)
                     db.child('Users').child(self.user).child('Categories').child('google').child('items').push(
                          {'Email': 'abc@example.com', 'Password': 'examplepassword', 'Hint': 'example hint', 'Category': 'google', 'key': str(now)})
                     db.child('Users').child(self.user).child('Categories').child('google').child(
                                 'info').set({'icon': 'google'})
-
+                    time.sleep(.5)
                          
                     db.child('Users').child(self.user).child('Categories').child('microsoft').child('items').push(
                          {'Email': 'abc@example.com', 'Password': 'examplepassword', 'Hint': 'example hint', 'Category': 'microsoft', 'key': str(now)})
                     db.child('Users').child(self.user).child('Categories').child('microsoft').child(
                                 'info').set({'icon':'microsoft' })
-                    
+                    time.sleep(.5)
                     self.show_dialog('Success','Account Created\nPlease login.')
                     root.manager.transition=SlideTransition() 
                     root.manager.transition.direction='right'
@@ -374,7 +375,8 @@ class Main(MDApp):
                 'Password': password,
                 'Hint': hint,
                 'Category': str(self.details_page_category),
-                'key': str(now)
+                'key': str(now),
+                'fav_icon':'heart-outline'
             }
             db.child('Users').child(self.user).child('Categories').child(
                 self.details_page_category).child('items').push(data)
@@ -514,6 +516,22 @@ class Main(MDApp):
                     'Categories').child(deleted_category).remove()
                 Clock.schedule_once(lambda x: self.show_categories())
         Clock.schedule_once(lambda x, deleted_category=deleted_category:delete_category_(deleted_category),.5)
+        
+
+    def add_to_fav(self,i):
+        # print(i)
+        # get_fav=db.child("Users").child(self.user).child('Fav').push(i)
+        get_fav=db.child("Users").child(self.user).child('Fav').get()
+
+        # print(get_fav)
+        for j in get_fav.each():
+            # print(i)
+            item = j.val()
+            if item['key']==i['key']:
+                print('match')
+                break
+            else:
+                db.child("Users").child('test').child('Fav').push(i)
 
     def detailsPage(self, val, category):
         # print(val)
@@ -521,10 +539,12 @@ class Main(MDApp):
         self.screen_manager.get_screen(
             'DetailsPage').ids.details_title.text=category.upper()
         value=val
+
         self.change_screen('DetailsPage')
         self.screen_manager.get_screen(
             'DetailsPage').ids.details.clear_widgets()
         for i in value.values():
+            # print(i)
             card=MDCard(
                 size_hint_y=None,
                 height=(self.w[1]/5),
@@ -549,6 +569,16 @@ class Main(MDApp):
                     font_name=self.font_name,
             )
             hint_label.font_size=sp(15)
+            fav_icon=ClickableMDIcon(
+                icon=i['fav_icon'],
+                size_hint=(None, 1),
+                width=dp(25),
+
+                on_press=lambda x, val =i :self.add_to_fav(val),
+            )
+
+            fav_icon.font_size=sp(18)
+
             edit_icon=ClickableMDIcon(
                 icon='circle-edit-outline',
                 size_hint=(None, 1),
@@ -556,7 +586,6 @@ class Main(MDApp):
 
                 on_press=lambda x, key=i['key'], category=i['Category'], hint=i['Hint'], email=i['Email'], password=i['Password']: self.edit_details_dialog(
                     category, hint, email, password, key),
-
             )
             edit_icon.font_size=sp(18)
             delete_icon=ClickableMDIcon(
@@ -568,6 +597,7 @@ class Main(MDApp):
             )
             delete_icon.font_size=sp(18)
             hint_boxlayout.add_widget(hint_label)
+            hint_boxlayout.add_widget(fav_icon)
             hint_boxlayout.add_widget(edit_icon)
             hint_boxlayout.add_widget(delete_icon)
 

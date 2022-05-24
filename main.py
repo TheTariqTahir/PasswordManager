@@ -1,4 +1,3 @@
-import email
 from kivy.lang import Builder
 from datetime import datetime
 from kivymd.app import MDApp
@@ -6,8 +5,6 @@ from kivy.metrics import dp, sp
 from kivymd.uix.card import MDCard
 from kivymd.uix.snackbar import Snackbar
 from kivymd.uix.boxlayout import MDBoxLayout
-# from kivymd.uix.gridlayout import MDGridLayout
-from kivy.uix.anchorlayout import AnchorLayout
 from kivy.core.clipboard import Clipboard
 from kivy.uix.screenmanager import RiseInTransition, FallOutTransition,SlideTransition
 from kivymd.uix.dialog import MDDialog
@@ -15,7 +12,6 @@ from kivymd.uix.button import MDFlatButton
 from kivy.clock import Clock
 from kivymd.uix.label import MDLabel, MDIcon
 from kivy.core.window import Window
-import asyncio
 from kivy.uix.behaviors import ButtonBehavior
 from kivymd.uix.behaviors import (
     FakeCircularElevationBehavior,
@@ -70,14 +66,12 @@ from firebase_admin import credentials
 cred = credentials.Certificate("passwordmanager-43-firebase-adminsdk-jivnk-ee21cbbd63.json")
 fb =firebase_admin.initialize_app(cred)
 
-
-
 class Main(MDApp):
     path_to_kv_file='kv_file.kv'
 
     def build(self):
-        # self.w= Window.size
         self.w=Window.size=350, 650
+        #self.w= Window.size
 
         self.con = sqlite3.connect('offline.db')
         self.cur =self.con.cursor()
@@ -483,8 +477,6 @@ class Main(MDApp):
                 i.md_bg_color=self.theme_cls.bg_normal
                 i.children[0].text_color=self.theme_cls.primary_color
 
-        
-
     def change_screen(self, screen):
         # print(screen.text)
         if screen == 'MainPage':
@@ -494,9 +486,6 @@ class Main(MDApp):
             self.screen_manager.transition=RiseInTransition()
         self.screen_manager.current=screen
         
-        
-
- 
     def add_category(self, text):
         self.spinner=True
         def add_category_(text):
@@ -509,7 +498,7 @@ class Main(MDApp):
                 db.child('Users').child(self.user).child('Categories').child(
                     (text.text).lower()).child('info').set({'icon': str(self.selected_category)})
                 db.child('Users').child(self.user).child('Categories').child((text.text).lower()).child('items').push(
-                    {'Email': 'abc@example.com', 'Password': 'examplepassword', 'Hint': 'example hint', 'Category': (text.text).lower(), 'key': str(now)})
+                    {'Email': 'abc@example.com', 'Password': 'examplepassword', 'fav_icon':'heart-outline','Hint': 'example hint', 'Category': (text.text).lower(), 'key': str(now)})
                 self.selected_category='heart'
                 Clock.schedule_once(lambda x: self.show_categories(), .5)
                 self.spinner=False
@@ -582,9 +571,16 @@ class Main(MDApp):
         # print(text.text)
         limit += 1
         if len(text.text) == limit:
-            text.text=text.text[:limit-1]
+            text.font_size=sp(11)
+            # print(len(text.text))
+        elif len(text.text) > limit:
+            text.font_size=sp(11)
+            text.max_text_length= 40
+            limit=40+1
+            text.text=text.text[:(limit)-1]
         else:
-            pass
+            text.font_size=sp(15)
+            
 
     def dismiss_category(self):
         self.category_dialog.dismiss()
@@ -602,7 +598,6 @@ class Main(MDApp):
                     'Categories').child(deleted_category).remove()
                 Clock.schedule_once(lambda x: self.show_categories())
         Clock.schedule_once(lambda x, deleted_category=deleted_category:delete_category_(deleted_category),.5)
-        
 
     def add_to_fav(self,i):
         # print(i)
@@ -623,6 +618,7 @@ class Main(MDApp):
 
         if duplicate ==False:
             db.child("Users").child(self.user).child('Fav').push(i)
+            Clock.Schedule_once(lambda x: self.Show_Fav(),.5)
 
     def Show_Fav(self):
         # print(val)
@@ -786,9 +782,8 @@ class Main(MDApp):
                 card.add_widget(hint_boxlayout)
                 card.add_widget(email_boxlayout)
                 card.add_widget(password_boxlayout)
-                self.screen_manager.get_screen('DetailsPage').ids.details.add_widget(
+                self.screen_manager.get_screen('FavPage').ids.fav.add_widget(
                     card)
-
 
     def detailsPage(self, category):
         # print(val)
@@ -1045,7 +1040,7 @@ class Main(MDApp):
             )
             delete_icon.font_size=sp(18)
             card.add_widget(delete_icon)
-
+            
             self.screen_manager.get_screen(
                 'MainPage').ids.Main_page.add_widget(card)
 

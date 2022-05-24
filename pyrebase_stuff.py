@@ -27,13 +27,18 @@ user= 'test'
 data ={'Category': 'facebook', 'Email': 'abc@example.com', 'Hint': 'example hint', 'Password': 'examplepassword', 
 'key': '2022-05-16 18:15:29.660340'}
 
-selected=db.child('Users').child(user).child(
-            'Fav').get()
+# selected=db.child('Users').child(user).child(
+#             'Fav').get()
 
-for i in selected.each():
-    print(i.val())
+# for i in selected.each():
+#     print(i.val())
 
-
+details=db.child('Users').child(self.user).child(
+    'Categories').child('other_pswd').child('items').get()
+for i in details.each():
+    if i.val()['key'] == edit_key:
+        
+        db.child('Users').child(self.user).child('Fav').child(i.key()).update(data)
 
 
 

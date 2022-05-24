@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from kivy.lang import Builder
 from datetime import datetime
 from kivymd.app import MDApp
@@ -38,6 +39,9 @@ class Category_content(MDBoxLayout):
     pass
 
 class Eidt_details(MDBoxLayout):
+    pass
+
+class Eidt_Fav(MDBoxLayout):
     pass
 
 class Add_Credentials(MDBoxLayout):
@@ -92,8 +96,6 @@ class Main(MDApp):
         self.email=''
         self.e_password=''
 
-        
-
         self.cur.execute("SELECT * from login")
         res = self.cur.fetchall()
         if res ==[]:
@@ -144,7 +146,6 @@ class Main(MDApp):
         Window.bind(on_keyboard=self.onBackKey)
         self.count_back=0
         self.screen_list = []
-        print(self.email)
         if res != []:
             self.login(self.email,self.e_password)
         
@@ -514,6 +515,32 @@ class Main(MDApp):
             )
         self.category_dialog.open()
         
+    def edit_fav_dialog(self, category, hint, email, password, key):
+        try:
+            self.edit_email=email
+            self.edit_pass=password
+            self.edit_hint=hint
+            self.edit_category=category
+            self.edit_key=key
+            print('run')
+            self.edit_fav_dialog_=MDDialog(
+                    type="custom",
+                    content_cls=Eidt_Fav(),
+                    pos_hint={'center_y': .7},
+
+                    height=self.w[1]/4.2,
+                    radius=[20, ],
+                    md_bg_color=self.theme_cls.bg_light,
+                )
+            self.edit_fav_dialog_.content_cls.ids.edit_email.text=self.edit_email
+            self.edit_fav_dialog_.content_cls.ids.edit_hint.text=self.edit_hint
+            self.edit_fav_dialog_.content_cls.ids.edit_pass.text=self.edit_pass
+            self.edit_fav_dialog_.content_cls.ids.edit_key.text=self.edit_key
+            self.edit_fav_dialog_.content_cls.ids.edit_category.text=self.edit_category
+            self.edit_fav_dialog_.open()
+        except:
+            print('not')
+
     def edit_details_dialog(self, category, hint, email, password, key):
         self.edit_email=email
         self.edit_pass=password
@@ -567,6 +594,35 @@ class Main(MDApp):
                 lambda x, val=edit_category:  self.refresh_details(val))
         Clock.schedule_once(lambda x,  edit_key=edit_key, edit_category=edit_category, edit_hint=edit_hint, edit_email=edit_email, edit_pass=edit_pass:update_details_( edit_key, edit_category, edit_hint, edit_email, edit_pass),.5)
 
+    def update_fav(self, edit_key, edit_category, edit_hint, edit_email, edit_pass):
+        def update_fav( edit_key, edit_category, edit_hint, edit_email, edit_pass):
+            data={
+                'Email': edit_email,
+                'Password': edit_pass,
+                'Hint': edit_hint,
+
+            }
+            details=db.child('Users').child(self.user).child(
+                'Categories').child(edit_category).child('items').get()
+            for i in details.each():
+                if i.val()['key'] == edit_key:
+                    db.child('Users').child(self.user).child('Categories').child(
+                        edit_category).child('items').child(i.key()).update(data)
+                    break
+
+            selected=db.child('Users').child(self.user).child(
+            'Fav').get()
+            for i in selected.each():
+                print(i.val()['key'])
+                if i.val()['key'] == edit_key:
+                    db.child("Users").child(self.user).child('Fav').child(i.key()).update(data)
+    
+
+            self.edit_fav_dialog_.dismiss()
+            Clock.schedule_once(
+                lambda x:  self.Show_Fav(),.2)
+        Clock.schedule_once(lambda x,  edit_key=edit_key, edit_category=edit_category, edit_hint=edit_hint, edit_email=edit_email, edit_pass=edit_pass:update_fav( edit_key, edit_category, edit_hint, edit_email, edit_pass),.5)
+
     def text_replace(self, text, limit):
         # print(text.text)
         limit += 1
@@ -618,34 +674,13 @@ class Main(MDApp):
 
         if duplicate ==False:
             db.child("Users").child(self.user).child('Fav').push(i)
-            Clock.Schedule_once(lambda x: self.Show_Fav(),.5)
+            Clock.schedule_once(lambda x: self.Show_Fav(),.5)
 
     def Show_Fav(self):
-        # print(val)
-        # print(category)
-        # self.screen_manager.get_screen(
-        #     'DetailsPage').ids.details_title.text=category.upper()
-
         selected=db.child('Users').child(self.user).child(
             'Fav').get()
 
-
-        # for i in selected.each():
-        #     if i.key() == 'items':
-        #         # print(i.val())
-        #         value=i.val()
-        # value=val()
-        # print(value.values())
-        
-        # self.change_screen('FavPage')
-        # print(self.screen_manager.get_screen(
-        #     'FavPage').ids)
-        # self.screen_manager.get_screen(
-        #     'FavPage').ids.fav.clear_widgets()
-
         if selected.val()==None:
-            # self.screen_manager.get_screen(
-            # 'FavPage').ids.fav.clear_widgets()
             pass
         else:
             self.screen_manager.get_screen(
@@ -653,6 +688,7 @@ class Main(MDApp):
             for j in selected.each():
                 # print(i)
                 i = j.val()
+                # print(i)
                 card=MDCard(
                     size_hint_y=None,
                     height=(self.w[1]/5),
@@ -677,35 +713,34 @@ class Main(MDApp):
                         font_name=self.font_name,
                 )
                 hint_label.font_size=sp(15)
-                fav_icon=ClickableMDIcon(
-                    icon=i['fav_icon'],
-                    size_hint=(None, 1),
-                    width=dp(25),
+                # fav_icon=ClickableMDIcon(
+                #     icon=i['fav_icon'],
+                #     size_hint=(None, 1),
+                #     width=dp(25),
 
-                    on_press=lambda x, val =i :self.add_to_fav(val),
-                )
+                #     on_press=lambda x, val =i :self.add_to_fav(val),
+                # )
 
-                fav_icon.font_size=sp(18)
+                # fav_icon.font_size=sp(18)
 
                 edit_icon=ClickableMDIcon(
                     icon='circle-edit-outline',
                     size_hint=(None, 1),
                     width=dp(25),
-
-                    on_press=lambda x, key=i['key'], category=i['Category'], hint=i['Hint'], email=i['Email'], password=i['Password']: self.edit_details_dialog(
+                    # on_release=lambda x:print(i['Email']),
+                    on_press=lambda x, key=i['key'], category=i['Category'], hint=i['Hint'], email=i['Email'], password=i['Password']: self.edit_fav_dialog(
                         category, hint, email, password, key),
                 )
                 edit_icon.font_size=sp(18)
                 delete_icon=ClickableMDIcon(
-                    icon='delete-outline',
+                    icon='heart',
                     size_hint=(None, 1),
                     width=dp(25),
-                    on_press=lambda x, key=i['key'], category=i['Category']: self.delete_details(
-                        category, key),
+                    on_press=lambda x, key=i['key'], : self.delete_fav(key),
                 )
                 delete_icon.font_size=sp(18)
                 hint_boxlayout.add_widget(hint_label)
-                hint_boxlayout.add_widget(fav_icon)
+                # hint_boxlayout.add_widget(fav_icon)
                 hint_boxlayout.add_widget(edit_icon)
                 hint_boxlayout.add_widget(delete_icon)
 
@@ -841,7 +876,7 @@ class Main(MDApp):
                 icon='circle-edit-outline',
                 size_hint=(None, 1),
                 width=dp(25),
-
+                
                 on_press=lambda x, key=i['key'], category=i['Category'], hint=i['Hint'], email=i['Email'], password=i['Password']: self.edit_details_dialog(
                     category, hint, email, password, key),
             )
@@ -955,6 +990,19 @@ class Main(MDApp):
                     db.child('Users').child(self.user).child('Categories').child(
                         category).child('items').child(i.key()).remove()
                     self.refresh_details(category)
+                    return
+
+    def delete_fav(self, key):
+        selected=db.child('Users').child(self.user).child(
+            'Fav').get()
+        if len(selected.each()) == 1:
+            self.show_dialog('Warning', "At least one item is required")
+        else:
+            for i in selected.each():
+                if i.val()['key'] == key:
+                    db.child('Users').child(self.user).child(
+                            'Fav').child(i.key()).remove()
+                    self.Show_Fav()
                     return
 
 

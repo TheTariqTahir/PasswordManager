@@ -920,23 +920,13 @@ ScreenManager:
             MDLabel:
                 # md_bg_color: .2,.2,.2,1
                 id:details_title
-                text:'Categories'
+                text:'Favorites'
                 theme_text_color:'Custom'
                 text_color:app.theme_cls.primary_color
                 font_name:font_name
                 font_size:sp(20)
 
-            MDCard:
-                size_hint_x: .5
-                elevation:0
-                on_press: app.add_details_dialog()
-                md_bg_color:app.theme_cls.bg_normal
-                MDIcon:
-                    md_bg_color:app.theme_cls.bg_normal
-                    icon:'plus-box-multiple-outline'
-                    halign:'right'
-                    font_size:sp(30)
-                    theme_text_color:'Secondary'
+           
         ScrollView:
             MDGridLayout:
                 id:fav

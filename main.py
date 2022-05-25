@@ -156,6 +156,7 @@ class Main(MDApp):
         self.spinner=False
         return self.builder
    
+    # Login Info
 
     def set_root(self,root):
         self.root=root
@@ -215,8 +216,6 @@ class Main(MDApp):
                 
         Clock.schedule_once(lambda x,email=email,spinner=spinner:forgot_password_(email,spinner),.5)
 
- 
-    # @mainthread
     def login(self,email,password,spinner=None):
             # import time
             # time.sleep(3)
@@ -361,132 +360,8 @@ class Main(MDApp):
             root.transition.direction='right'
             root.current='LoginPage'
 
+    # Category Fuctions
 
-
-    def onBackKey(self,window,key,*args):
-        # print(self.forgotPage)
-        if key == 27 and self.forgotPage==True:
-            self.root.manager.transition=SlideTransition()
-            self.root.manager.transition.direction='right'
-            self.root.manager.current='LoginPage'
-            self.forgotPage=False
-            return True
-
-            # self.root.current='LoginPage'
-            
-        else:
-            if key == 27 and self.screen_list ==[] and self.count_back ==0:
-                self.count_back = 1
-                # toast('Press Back Again to exit',duration=1)
-                snackbar=Snackbar(
-                text='Press Back Again to exit',
-                duration=1,
-                )
-                snackbar.open()
-                return True
-            if key == 27 and self.screen_list ==[] and self.count_back ==1:
-                return False
-                
-            elif key ==27:
-                self.screen_manager.current = self.screen_list.pop()
-                print(self.screen_list)
-                self.screen_manager.transition.direction='right'
-                
-            return True
-        # return False
-
-    def change_theme_color(self, color, hue):
-        self.theme_cls.primary_palette=color
-        self.theme_cls.primary_hue=hue
-
-    def change_theme(self):
-        if self.theme_cls.theme_style == "Dark":
-            self.theme_cls.theme_style="Light"
-            self.theme_cls.primary_palette='Teal'
-            self.cur.execute('DELETE from theme;')
-            self.cur.execute("INSERT INTO theme VALUES ('Light','Teal')")
-            self.con.commit()
-            self.builder.ids.toolbar.md_bg_color=self.theme_cls.bg_normal
-
-            if self.screen_manager.current == 'MainPage':
-                Clock.schedule_once(lambda x: self.show_categories(
-                    values=self.all_categories))
-            elif self.screen_manager.current == 'DetailsPage':
-                self.detailsPage(
-                                 self.details_page_category)
-            else:
-                pass
-
-        else:
-            self.theme_cls.theme_style="Dark"
-            self.theme_cls.primary_palette='Orange'
-            self.cur.execute('DELETE from theme;')
-            self.cur.execute("INSERT INTO theme VALUES ('Dark','Orange')")
-            self.con.commit()
-            self.builder.ids.toolbar.md_bg_color=self.theme_cls.bg_normal
-            if self.screen_manager.current == 'MainPage':
-                Clock.schedule_once(lambda x: self.show_categories(
-                    values=self.all_categories))
-            elif self.screen_manager.current == 'DetailsPage':
-                self.detailsPage(self.details_page_category)
-            else:
-                pass
-
-        # async def get_data():
-        #     task = asyncio.create_task(self.show_categories())
-        pass
-
-    def add_details(self, val):
-        self.screen_list.append('MainPage')
-        self.selected_details=val
-        for i in self.selected_details.values():
-            self.details_page_category=i['Category']
-
-        self.detailsPage(self.details_page_category)
-        # print(self.selected_details)
-
-    def add_credentials(self, hint, email, password):
-        if email == '' and email == '':
-            self.show_dialog('Warning', 'Email and Password is required')
-        elif email == '':
-            self.show_dialog('Warning', 'Email is required')
-        elif password == '':
-            self.show_dialog('Warning', 'Password is required')
-        else:
-            now=datetime.now()
-            data={
-                'Email': email,
-                'Password': password,
-                'Hint': hint,
-                'Category': str(self.details_page_category),
-                'key': str(now),
-                'fav_icon':'heart-outline'
-            }
-            db.child('Users').child(self.user).child('Categories').child(
-                self.details_page_category).child('items').push(data)
-            category=self.details_page_category
-            self.add_credentials_dialog.dismiss()
-            self.add_data_details(data)
-
-    def bottom_navigation(self,item):
-
-        for i in self.builder.ids.bottom_nav.children:
-            if i == item:
-                i.md_bg_color=self.theme_cls.primary_color
-                i.children[0].text_color=self.theme_cls.bg_light
-            else:
-                i.md_bg_color=self.theme_cls.bg_normal
-                i.children[0].text_color=self.theme_cls.primary_color
-
-    def change_screen(self, screen):
-        # print(screen.text)
-        if screen == 'MainPage':
-            self.screen_manager.transition=FallOutTransition()
-        else:
-            # self.screen_list.append(screen)
-            self.screen_manager.transition=RiseInTransition()
-        self.screen_manager.current=screen
-        
     def add_category(self, text):
         self.spinner=True
         def add_category_(text):
@@ -514,33 +389,325 @@ class Main(MDApp):
                 pos_hint={'center_y': .7},
             )
         self.category_dialog.open()
-        
-    def edit_fav_dialog(self, category, hint, email, password, key):
-        try:
-            self.edit_email=email
-            self.edit_pass=password
-            self.edit_hint=hint
-            self.edit_category=category
-            self.edit_key=key
-            print('run')
-            self.edit_fav_dialog_=MDDialog(
-                    type="custom",
-                    content_cls=Eidt_Fav(),
-                    pos_hint={'center_y': .7},
 
-                    height=self.w[1]/4.2,
-                    radius=[20, ],
+    def show_categories(self, values=''):
+    
+            self.screen_manager.get_screen(
+                'MainPage').ids.Main_page.clear_widgets()
+            if values == '':
+                self.all_categories=db.child('Users').child(
+                    self.user).child('Categories').get()
+            else:
+                self.all_categories=values
+
+
+            for i in self.all_categories.each():
+                if i.val()['info']['icon'] == 'Other':
+                    current_icon='heart'
+                else:
+                    current_icon=i.val()['info']['icon']
+
+                current_category=i.key()
+
+                card=MDCard(
+                            size_hint_y=None,
+                            elevation=dp(3),
+                            radius=dp(20),
+                            height=(self.w[1]/8),
+                            padding=dp(10)
+                            )
+                Inner_card=MDCard(
+                    size_hint_x=.8,
+                    elevation=0,
+                    spacing=dp(5),
                     md_bg_color=self.theme_cls.bg_light,
+                    on_press=lambda x, value=i.val(
+                    )['items']: self.add_details(value),
                 )
-            self.edit_fav_dialog_.content_cls.ids.edit_email.text=self.edit_email
-            self.edit_fav_dialog_.content_cls.ids.edit_hint.text=self.edit_hint
-            self.edit_fav_dialog_.content_cls.ids.edit_pass.text=self.edit_pass
-            self.edit_fav_dialog_.content_cls.ids.edit_key.text=self.edit_key
-            self.edit_fav_dialog_.content_cls.ids.edit_category.text=self.edit_category
-            self.edit_fav_dialog_.open()
-        except:
-            print('not')
 
+                # anchor = AnchorLayout()
+
+                icon_card=MDCard(
+                    elevation=0,
+                    radius=dp(8),
+                    size_hint=(.418, .53),
+                    pos_hint={'center_y': .5},
+                    padding=0,
+                    md_bg_color=self.theme_cls.primary_color,
+                )
+                
+                Category_icon=ClickableMDIcon(
+                    icon=current_icon.lower(),
+                    # size_hint=(.43, .5),
+                    halign='center',
+                    pos_hint={'center_y': .55},
+                    radius=dp(8),
+                    # md_bg_color=self.theme_cls.primary_color,
+
+                    theme_text_color='Custom',
+                    text_color=(1, 1, 1, 1),
+                )
+                Category_icon.font_size=sp(20)
+
+                Category_text=MDLabel(
+                text=current_category.upper(),
+                font_name=self.font_name,
+                )
+                Category_text.font_size=sp(10)
+
+                icon_card.add_widget(Category_icon)
+
+                Inner_card.add_widget(icon_card)
+                # Inner_card.add_widget(Category_icon)
+                Inner_card.add_widget(Category_text)
+                card.add_widget(Inner_card)
+
+
+                delete_icon=ClickableMDIcon(
+                    icon='delete-outline',
+                    size_hint=(.15, .4),
+                    pos_hint={'center_y': .5},
+
+                    on_release=lambda x, val=i.key(): self.delete_category(val),
+                )
+                delete_icon.font_size=sp(18)
+                card.add_widget(delete_icon)
+                
+                self.screen_manager.get_screen(
+                    'MainPage').ids.Main_page.add_widget(card)
+    
+    def dismiss_category(self):
+        self.category_dialog.dismiss()
+
+    def delete_category(self, deleted_category):
+        def delete_category_(deleted_category):
+            list_of_categories=db.child('Users').child(
+                self.user).child('Categories').get()
+            if len(list_of_categories.each()) == 1:
+                self.show_dialog('Warning', "At least one Category is required")
+            else:
+                self.screen_manager.get_screen(
+                    'MainPage').ids.Main_page.clear_widgets()
+                db.child('Users').child(self.user).child(
+                    'Categories').child(deleted_category).remove()
+
+                Clock.schedule_once(lambda x: self.show_categories())
+        Clock.schedule_once(lambda x, deleted_category=deleted_category:delete_category_(deleted_category),.5)
+
+    # Details Page Functions
+
+        def add_data_details(self,i):
+            card=MDCard(
+                size_hint_y=None,
+                height=(self.w[1]/5),
+                elevation=dp(3),
+                radius=dp(20),
+                padding=dp(13),
+                spacing=dp(8),
+                orientation='vertical',
+            )
+
+        hint_boxlayout=MDBoxLayout(
+                    size_hint_y=.4,
+                    spacing=dp(15),
+                    padding=('0dp', '0dp', '14dp', '0dp'),
+                    )
+
+        # ===== Hint Text Area
+        hint_label=MDLabel(
+                text=i['Hint'],
+                theme_text_color='Custom',
+                text_color=self.theme_cls.primary_color,
+                font_name=self.font_name,
+        )
+        hint_label.font_size=sp(15)
+        fav_icon=ClickableMDIcon(
+            icon=i['fav_icon'],
+            size_hint=(None, 1),
+            width=dp(25),
+
+            on_press=lambda x, val =i :self.add_to_fav(val),
+        )
+
+        fav_icon.font_size=sp(18)
+
+        edit_icon=ClickableMDIcon(
+            icon='circle-edit-outline',
+            size_hint=(None, 1),
+            width=dp(25),
+            
+            on_press=lambda x, key=i['key'], category=i['Category'], hint=i['Hint'], email=i['Email'], password=i['Password']: self.edit_details_dialog(
+                category, hint, email, password, key),
+        )
+        edit_icon.font_size=sp(18)
+        delete_icon=ClickableMDIcon(
+            icon='delete-outline',
+            size_hint=(None, 1),
+            width=dp(25),
+            on_press=lambda x, card = card, key=i['key'], category=i['Category']: self.delete_details(
+                category, key,card),
+        )
+        delete_icon.font_size=sp(18)
+        hint_boxlayout.add_widget(hint_label)
+        hint_boxlayout.add_widget(fav_icon)
+        hint_boxlayout.add_widget(edit_icon)
+        hint_boxlayout.add_widget(delete_icon)
+
+        # on_press=lambda x,key=i['key'],category= i['Category'], hint= i['Hint'],email= i['Email'],password = i['Password']: self.edit_details_dialog(category,hint,email,password,key),
+        # on_press=lambda x ,key=i['key'],category=i['Category']: self.delete_details(category,key),
+        # =========== Email
+        email_boxlayout=MDBoxLayout(
+            size_hint_y=.8,
+            spacing=dp(8),
+            padding=('0dp', '0dp', '20dp', '0dp'),
+        )
+        email_icon=ClickableMDIcon(
+            icon='email',
+            size_hint=(None, 1),
+            width=dp(25),
+
+        )
+        email_icon.font_size=sp(18)
+
+        email_label=MDLabel(
+            text=i['Email'],
+            font_name=self.font_name,
+        )
+        email_label.font_size=sp(15)
+
+        email_copy=ClickableMDIcon(
+            icon='content-copy',
+            size_hint=(None, 1),
+            width=dp(20),
+            halign='right',
+            on_press=lambda x, val=i['Email']: self.snackbar_show(val)
+
+        )
+        email_copy.font_size=sp(18)
+
+        email_boxlayout.add_widget(email_icon)
+        email_boxlayout.add_widget(email_label)
+        email_boxlayout.add_widget(email_copy)
+        # ================== Password
+        password_boxlayout=MDBoxLayout(
+            size_hint_y=.8,
+            spacing=dp(8),
+            padding=('0dp', '0dp', '20dp', '0dp'),
+        )
+        password_icon=ClickableMDIcon(
+            icon='key',
+            size_hint=(None, 1),
+            width=dp(25),
+
+        )
+        password_icon.font_size=sp(18)
+        password_label=MDLabel(
+            text=i['Password'],
+
+            font_name=self.font_name,
+        )
+        password_label.font_size=sp(15)
+        password_copy=ClickableMDIcon(
+            icon='content-copy',
+            size_hint=(None, 1),
+            width=dp(20),
+            halign='right',
+            on_press=lambda x, val=i['Password']: self.snackbar_show(val)
+
+        )
+        password_copy.font_size=sp(18)
+
+        password_boxlayout.add_widget(password_icon)
+        password_boxlayout.add_widget(password_label)
+        password_boxlayout.add_widget(password_copy)
+
+
+
+        card.add_widget(hint_boxlayout)
+        card.add_widget(email_boxlayout)
+        card.add_widget(password_boxlayout)
+        self.screen_manager.get_screen('DetailsPage').ids.details.add_widget(
+            card)
+
+    def detailsPage(self, category):
+        # print(val)
+        # print(category)
+        self.screen_manager.get_screen(
+            'DetailsPage').ids.details_title.text=category.upper()
+
+        selected=db.child('Users').child(self.user).child(
+            'Categories').child(category).get()
+        for i in selected.each():
+            if i.key() == 'items':
+                # print(i.val())
+                value=i.val()
+        # value=val()
+        # print(value.values())
+        self.change_screen('DetailsPage')
+        self.screen_manager.get_screen(
+            'DetailsPage').ids.details.clear_widgets()
+        for i in value.values():
+            self.add_data_details(i)
+
+    def refresh_details(self, category):
+        # self.screen_manager.get_screen('DetailsPage').ids.details.clear_widgets()
+        # selected=db.child('Users').child(self.user).child(
+        #     'Categories').child(category).get()0
+        # for i in selected.each():
+        #     if i.key() == 'items':
+        #         # print(i.val())
+        self.detailsPage(category)
+
+    def delete_details(self, category, key,card):
+        self.screen_manager.get_screen('DetailsPage').ids.details.remove_widget(card)
+        print(card)
+
+        def delete_details_():
+            selected=db.child('Users').child(self.user).child(
+                'Categories').child(category).child('items').get()
+            if len(selected.each()) == 1:
+                self.show_dialog('Warning', "At least one item is required")
+            else:
+                for i in selected.each():
+                    if i.val()['key'] == key:
+                        
+                        db.child('Users').child(self.user).child('Categories').child(
+                            category).child('items').child(i.key()).remove()
+                        # self.refresh_details(category)
+                        return
+        Clock.schedule_once(lambda x: delete_details_(),.5)
+
+    def add_details(self, val):
+        self.screen_list.append('MainPage')
+        self.selected_details=val
+        for i in self.selected_details.values():
+            self.details_page_category=i['Category']
+
+        self.detailsPage(self.details_page_category)
+
+    def add_credentials(self, hint, email, password):
+        if email == '' and email == '':
+            self.show_dialog('Warning', 'Email and Password is required')
+        elif email == '':
+            self.show_dialog('Warning', 'Email is required')
+        elif password == '':
+            self.show_dialog('Warning', 'Password is required')
+        else:
+            now=datetime.now()
+            data={
+                'Email': email,
+                'Password': password,
+                'Hint': hint,
+                'Category': str(self.details_page_category),
+                'key': str(now),
+                'fav_icon':'heart-outline'
+            }
+            db.child('Users').child(self.user).child('Categories').child(
+                self.details_page_category).child('items').push(data)
+            category=self.details_page_category
+            self.add_credentials_dialog.dismiss()
+            self.add_data_details(data)
+    
     def edit_details_dialog(self, category, hint, email, password, key):
         self.edit_email=email
         self.edit_pass=password
@@ -594,6 +761,9 @@ class Main(MDApp):
                 lambda x, val=edit_category:  self.refresh_details(val))
         Clock.schedule_once(lambda x,  edit_key=edit_key, edit_category=edit_category, edit_hint=edit_hint, edit_email=edit_email, edit_pass=edit_pass:update_details_( edit_key, edit_category, edit_hint, edit_email, edit_pass),.5)
 
+
+    # Fav Page Function
+
     def update_fav(self, edit_key, edit_category, edit_hint, edit_email, edit_pass):
         def update_fav( edit_key, edit_category, edit_hint, edit_email, edit_pass):
             data={
@@ -623,37 +793,31 @@ class Main(MDApp):
                 lambda x:  self.Show_Fav(),.2)
         Clock.schedule_once(lambda x,  edit_key=edit_key, edit_category=edit_category, edit_hint=edit_hint, edit_email=edit_email, edit_pass=edit_pass:update_fav( edit_key, edit_category, edit_hint, edit_email, edit_pass),.5)
 
-    def text_replace(self, text, limit):
-        # print(text.text)
-        limit += 1
-        if len(text.text) == limit:
-            text.font_size=sp(11)
-            # print(len(text.text))
-        elif len(text.text) > limit:
-            text.font_size=sp(11)
-            text.max_text_length= 40
-            limit=40+1
-            text.text=text.text[:(limit)-1]
-        else:
-            text.font_size=sp(15)
-            
+    def edit_fav_dialog(self, category, hint, email, password, key):
+        try:
+            self.edit_email=email
+            self.edit_pass=password
+            self.edit_hint=hint
+            self.edit_category=category
+            self.edit_key=key
+            print('run')
+            self.edit_fav_dialog_=MDDialog(
+                    type="custom",
+                    content_cls=Eidt_Fav(),
+                    pos_hint={'center_y': .7},
 
-    def dismiss_category(self):
-        self.category_dialog.dismiss()
-
-    def delete_category(self, deleted_category):
-        def delete_category_(deleted_category):
-            list_of_categories=db.child('Users').child(
-                self.user).child('Categories').get()
-            if len(list_of_categories.each()) == 1:
-                self.show_dialog('Warning', "At least one Category is required")
-            else:
-                self.screen_manager.get_screen(
-                    'MainPage').ids.Main_page.clear_widgets()
-                db.child('Users').child(self.user).child(
-                    'Categories').child(deleted_category).remove()
-                Clock.schedule_once(lambda x: self.show_categories())
-        Clock.schedule_once(lambda x, deleted_category=deleted_category:delete_category_(deleted_category),.5)
+                    height=self.w[1]/4.2,
+                    radius=[20, ],
+                    md_bg_color=self.theme_cls.bg_light,
+                )
+            self.edit_fav_dialog_.content_cls.ids.edit_email.text=self.edit_email
+            self.edit_fav_dialog_.content_cls.ids.edit_hint.text=self.edit_hint
+            self.edit_fav_dialog_.content_cls.ids.edit_pass.text=self.edit_pass
+            self.edit_fav_dialog_.content_cls.ids.edit_key.text=self.edit_key
+            self.edit_fav_dialog_.content_cls.ids.edit_category.text=self.edit_category
+            self.edit_fav_dialog_.open()
+        except:
+            print('not')
 
     def add_to_fav(self,i):
         # print(i)
@@ -823,181 +987,6 @@ class Main(MDApp):
                 # print(i)
                 self.add_data_fav(i)
 
-    def add_data_details(self,i):
-        card=MDCard(
-                size_hint_y=None,
-                height=(self.w[1]/5),
-                elevation=dp(3),
-                radius=dp(20),
-                padding=dp(13),
-                spacing=dp(8),
-                orientation='vertical',
-            )
-
-        hint_boxlayout=MDBoxLayout(
-                    size_hint_y=.4,
-                    spacing=dp(15),
-                    padding=('0dp', '0dp', '14dp', '0dp'),
-                    )
-
-        # ===== Hint Text Area
-        hint_label=MDLabel(
-                text=i['Hint'],
-                theme_text_color='Custom',
-                text_color=self.theme_cls.primary_color,
-                font_name=self.font_name,
-        )
-        hint_label.font_size=sp(15)
-        fav_icon=ClickableMDIcon(
-            icon=i['fav_icon'],
-            size_hint=(None, 1),
-            width=dp(25),
-
-            on_press=lambda x, val =i :self.add_to_fav(val),
-        )
-
-        fav_icon.font_size=sp(18)
-
-        edit_icon=ClickableMDIcon(
-            icon='circle-edit-outline',
-            size_hint=(None, 1),
-            width=dp(25),
-            
-            on_press=lambda x, key=i['key'], category=i['Category'], hint=i['Hint'], email=i['Email'], password=i['Password']: self.edit_details_dialog(
-                category, hint, email, password, key),
-        )
-        edit_icon.font_size=sp(18)
-        delete_icon=ClickableMDIcon(
-            icon='delete-outline',
-            size_hint=(None, 1),
-            width=dp(25),
-            on_press=lambda x, key=i['key'], category=i['Category']: self.delete_details(
-                category, key),
-        )
-        delete_icon.font_size=sp(18)
-        hint_boxlayout.add_widget(hint_label)
-        hint_boxlayout.add_widget(fav_icon)
-        hint_boxlayout.add_widget(edit_icon)
-        hint_boxlayout.add_widget(delete_icon)
-
-        # on_press=lambda x,key=i['key'],category= i['Category'], hint= i['Hint'],email= i['Email'],password = i['Password']: self.edit_details_dialog(category,hint,email,password,key),
-        # on_press=lambda x ,key=i['key'],category=i['Category']: self.delete_details(category,key),
-        # =========== Email
-        email_boxlayout=MDBoxLayout(
-            size_hint_y=.8,
-            spacing=dp(8),
-            padding=('0dp', '0dp', '20dp', '0dp'),
-        )
-        email_icon=ClickableMDIcon(
-            icon='email',
-            size_hint=(None, 1),
-            width=dp(25),
-
-        )
-        email_icon.font_size=sp(18)
-
-        email_label=MDLabel(
-            text=i['Email'],
-            font_name=self.font_name,
-        )
-        email_label.font_size=sp(15)
-
-        email_copy=ClickableMDIcon(
-            icon='content-copy',
-            size_hint=(None, 1),
-            width=dp(20),
-            halign='right',
-            on_press=lambda x, val=i['Email']: self.snackbar_show(val)
-
-        )
-        email_copy.font_size=sp(18)
-
-        email_boxlayout.add_widget(email_icon)
-        email_boxlayout.add_widget(email_label)
-        email_boxlayout.add_widget(email_copy)
-        # ================== Password
-        password_boxlayout=MDBoxLayout(
-            size_hint_y=.8,
-            spacing=dp(8),
-            padding=('0dp', '0dp', '20dp', '0dp'),
-        )
-        password_icon=ClickableMDIcon(
-            icon='key',
-            size_hint=(None, 1),
-            width=dp(25),
-
-        )
-        password_icon.font_size=sp(18)
-        password_label=MDLabel(
-            text=i['Password'],
-
-            font_name=self.font_name,
-        )
-        password_label.font_size=sp(15)
-        password_copy=ClickableMDIcon(
-            icon='content-copy',
-            size_hint=(None, 1),
-            width=dp(20),
-            halign='right',
-            on_press=lambda x, val=i['Password']: self.snackbar_show(val)
-
-        )
-        password_copy.font_size=sp(18)
-
-        password_boxlayout.add_widget(password_icon)
-        password_boxlayout.add_widget(password_label)
-        password_boxlayout.add_widget(password_copy)
-
-
-
-        card.add_widget(hint_boxlayout)
-        card.add_widget(email_boxlayout)
-        card.add_widget(password_boxlayout)
-        self.screen_manager.get_screen('DetailsPage').ids.details.add_widget(
-            card)
-
-    def detailsPage(self, category):
-        # print(val)
-        # print(category)
-        self.screen_manager.get_screen(
-            'DetailsPage').ids.details_title.text=category.upper()
-
-        selected=db.child('Users').child(self.user).child(
-            'Categories').child(category).get()
-        for i in selected.each():
-            if i.key() == 'items':
-                # print(i.val())
-                value=i.val()
-        # value=val()
-        # print(value.values())
-        self.change_screen('DetailsPage')
-        self.screen_manager.get_screen(
-            'DetailsPage').ids.details.clear_widgets()
-        for i in value.values():
-            self.add_data_details(i)
-
-    def refresh_details(self, category):
-        # self.screen_manager.get_screen('DetailsPage').ids.details.clear_widgets()
-        # selected=db.child('Users').child(self.user).child(
-        #     'Categories').child(category).get()0
-        # for i in selected.each():
-        #     if i.key() == 'items':
-        #         # print(i.val())
-        self.detailsPage(category)
-
-    def delete_details(self, category, key):
-        selected=db.child('Users').child(self.user).child(
-            'Categories').child(category).child('items').get()
-        if len(selected.each()) == 1:
-            self.show_dialog('Warning', "At least one item is required")
-        else:
-            for i in selected.each():
-                if i.val()['key'] == key:
-                    db.child('Users').child(self.user).child('Categories').child(
-                        category).child('items').child(i.key()).remove()
-                    self.refresh_details(category)
-                    return
-
     def delete_fav(self, key):
         selected=db.child('Users').child(self.user).child(
             'Fav').get()
@@ -1011,93 +1000,81 @@ class Main(MDApp):
                     self.Show_Fav()
                     return
 
+      # Misc functions
 
-    def show_categories(self, values=''):
-
-        self.screen_manager.get_screen(
-            'MainPage').ids.Main_page.clear_widgets()
-        if values == '':
-            self.all_categories=db.child('Users').child(
-                self.user).child('Categories').get()
-        else:
-            self.all_categories=values
-
-
-        for i in self.all_categories.each():
-            if i.val()['info']['icon'] == 'Other':
-                current_icon='heart'
+    def bottom_navigation(self,item):
+    
+        for i in self.builder.ids.bottom_nav.children:
+            if i == item:
+                i.md_bg_color=self.theme_cls.primary_color
+                i.children[0].text_color=self.theme_cls.bg_light
             else:
-                current_icon=i.val()['info']['icon']
+                i.md_bg_color=self.theme_cls.bg_normal
+                i.children[0].text_color=self.theme_cls.primary_color
 
-            current_category=i.key()
+    def change_screen(self, screen):
+        # print(screen.text)
+        if screen == 'MainPage':
+            self.screen_manager.transition=FallOutTransition()
+        else:
+            # self.screen_list.append(screen)
+            self.screen_manager.transition=RiseInTransition()
+        self.screen_manager.current=screen
 
-            card=MDCard(
-                        size_hint_y=None,
-                        elevation=dp(3),
-                        radius=dp(20),
-                        height=(self.w[1]/8),
-                        padding=dp(10)
-                        )
-            Inner_card=MDCard(
-                size_hint_x=.8,
-                elevation=0,
-                spacing=dp(5),
-                md_bg_color=self.theme_cls.bg_light,
-                on_press=lambda x, value=i.val(
-                )['items']: self.add_details(value),
-            )
+    def change_theme_color(self, color, hue):
+        self.theme_cls.primary_palette=color
+        self.theme_cls.primary_hue=hue
 
-            # anchor = AnchorLayout()
+    def change_theme(self):
+        if self.theme_cls.theme_style == "Dark":
+            self.theme_cls.theme_style="Light"
+            self.theme_cls.primary_palette='Teal'
+            self.cur.execute('DELETE from theme;')
+            self.cur.execute("INSERT INTO theme VALUES ('Light','Teal')")
+            self.con.commit()
+            self.builder.ids.toolbar.md_bg_color=self.theme_cls.bg_normal
 
-            icon_card=MDCard(
-                elevation=0,
-                radius=dp(8),
-                size_hint=(.418, .53),
-                pos_hint={'center_y': .5},
-                padding=0,
-                md_bg_color=self.theme_cls.primary_color,
-            )
-            
-            Category_icon=ClickableMDIcon(
-                icon=current_icon.lower(),
-                # size_hint=(.43, .5),
-                halign='center',
-                pos_hint={'center_y': .55},
-                radius=dp(8),
-                # md_bg_color=self.theme_cls.primary_color,
+            if self.screen_manager.current == 'MainPage':
+                Clock.schedule_once(lambda x: self.show_categories(
+                    values=self.all_categories))
+            elif self.screen_manager.current == 'DetailsPage':
+                self.detailsPage(
+                                 self.details_page_category)
+            else:
+                pass
 
-                theme_text_color='Custom',
-                text_color=(1, 1, 1, 1),
-            )
-            Category_icon.font_size=sp(20)
+        else:
+            self.theme_cls.theme_style="Dark"
+            self.theme_cls.primary_palette='Orange'
+            self.cur.execute('DELETE from theme;')
+            self.cur.execute("INSERT INTO theme VALUES ('Dark','Orange')")
+            self.con.commit()
+            self.builder.ids.toolbar.md_bg_color=self.theme_cls.bg_normal
+            if self.screen_manager.current == 'MainPage':
+                Clock.schedule_once(lambda x: self.show_categories(
+                    values=self.all_categories))
+            elif self.screen_manager.current == 'DetailsPage':
+                self.detailsPage(self.details_page_category)
+            else:
+                pass
 
-            Category_text=MDLabel(
-               text=current_category.upper(),
-               font_name=self.font_name,
-            )
-            Category_text.font_size=sp(10)
+        # async def get_data():
+        #     task = asyncio.create_task(self.show_categories())
+        pass
 
-            icon_card.add_widget(Category_icon)
-
-            Inner_card.add_widget(icon_card)
-            # Inner_card.add_widget(Category_icon)
-            Inner_card.add_widget(Category_text)
-            card.add_widget(Inner_card)
-
-
-            delete_icon=ClickableMDIcon(
-                icon='delete-outline',
-                size_hint=(.15, .4),
-                pos_hint={'center_y': .5},
-
-                on_release=lambda x, val=i.key(): self.delete_category(val),
-            )
-            delete_icon.font_size=sp(18)
-            card.add_widget(delete_icon)
-            
-            self.screen_manager.get_screen(
-                'MainPage').ids.Main_page.add_widget(card)
-
+    def text_replace(self, text, limit):
+        # print(text.text)
+        limit += 1
+        if len(text.text) == limit:
+            text.font_size=sp(11)
+            # print(len(text.text))
+        elif len(text.text) > limit:
+            text.font_size=sp(11)
+            text.max_text_length= 40
+            limit=40+1
+            text.text=text.text[:(limit)-1]
+        else:
+            text.font_size=sp(15)
 
     def snackbar_show(self, value):
         Clipboard.copy(value)
@@ -1107,13 +1084,41 @@ class Main(MDApp):
             )
         self.snackbar.open()
 
-
     def update_kv_files(self, text):
 
         with open(self.path_to_kv_file, "w+") as kv_file:
             kv_file.write(text)
 
+    def onBackKey(self,window,key,*args):
+            # print(self.forgotPage)
+        if key == 27 and self.forgotPage==True:
+            self.root.manager.transition=SlideTransition()
+            self.root.manager.transition.direction='right'
+            self.root.manager.current='LoginPage'
+            self.forgotPage=False
+            return True
 
+            # self.root.current='LoginPage'
+            
+        else:
+            if key == 27 and self.screen_list ==[] and self.count_back ==0:
+                self.count_back = 1
+                # toast('Press Back Again to exit',duration=1)
+                snackbar=Snackbar(
+                text='Press Back Again to exit',
+                duration=1,
+                )
+                snackbar.open()
+                return True
+            if key == 27 and self.screen_list ==[] and self.count_back ==1:
+                return False
+                
+            elif key ==27:
+                self.screen_manager.current = self.screen_list.pop()
+                print(self.screen_list)
+                self.screen_manager.transition.direction='right'
+                
+            return True
 
     def show_dialog(self, title, text):
         title=title
@@ -1129,6 +1134,8 @@ class Main(MDApp):
 
     def close_profile_dialog(self, obj):
             self.profile_dialouge.dismiss()
+
+
 
 if __name__ == '__main__':
     Main().run()

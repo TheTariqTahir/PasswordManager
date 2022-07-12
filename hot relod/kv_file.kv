@@ -1,0 +1,84 @@
+
+
+ScreenManager:
+    id : screen_manager
+    ProfilePage:
+    WelcomeScreen:
+    MainPage:
+    ProductsPage:
+    AboutPage:
+    ProfilePage:
+
+
+<WelcomeScreen>
+    name:'WelcomeScreen'
+    
+    MDBoxLayout:
+        orientation: 'vertical'    
+        md_bg_color: .5,.8,.8,1
+        MDLabel:
+            text:'Loading'
+            halign:'center'
+            font_name: 'font/Gang Bangers.ttf'
+            font_size:dp(60)
+        
+
+<MainPage>
+    name:'MainPage'
+
+<ProductsPage>
+    name:'ProductsPage'
+                
+
+<AboutPage>
+    name:'AboutPage'
+    
+<ProfilePage>
+    name:'ProfilePage'
+
+    # start
+    MDBoxLayout:
+        
+        orientation:'vertical'
+        md_bg_color:app.theme_cls.bg_dark
+        # MDFloatingActionButton:
+        #     pos_hint: {'center_x': .5,'center_y': .5}
+        #     on_press:app.change_theme()
+      
+        #Main Content Start Here
+
+        MDCard:
+            size_hint: 1, .3
+            md_bg_color:app.theme_cls.bg_dark
+            AnchorLayout:
+                anchor_x: 'left'
+                padding: ('50dp', '0dp', '0dp', '0dp')
+                CircleCard:
+                    size_hint: None, None
+                    size: "110", "110"
+                    radius: self.size[0] / 2
+                    # md_bg_color: 0, 0, 1, 1
+                    padding:dp(1)
+                    elevation:15
+                    AnchorLayout:
+                        FitImage:
+                            source:'src/user.png'
+                            size_hint:None,None
+                            width: dp(100)
+                            height: dp(100)
+                            pos_hint: {'center_x': .5,'center_y': .5}
+                            radius:[dp(360), dp(360), dp(360), dp(360) ]
+
+            MDLabel:
+                text:'UserName'
+            
+
+        MDCard:
+            md_bg_color:app.theme_cls.bg_dark
+            size_hint: 1, .8
+            elevation:0
+
+
+
+
+

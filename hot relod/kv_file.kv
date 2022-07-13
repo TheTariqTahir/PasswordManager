@@ -3,8 +3,8 @@
 ScreenManager:
     id : screen_manager
     ProfilePage:
-    WelcomeScreen:
     MainPage:
+    WelcomeScreen:
     ProductsPage:
     AboutPage:
     ProfilePage:
@@ -26,13 +26,168 @@ ScreenManager:
 <MainPage>
     name:'MainPage'
 
+    MDBoxLayout:
+        orientation: 'vertical'
+        halign:'center'
+        MDCard:
+            size_hint:.8,None
+            elevation:23
+            pos_hint:{'center_x':.5}
+
+
+
+
 <ProductsPage>
     name:'ProductsPage'
                 
 
 <AboutPage>
     name:'AboutPage'
-    
+    MDBoxLayout:
+        
+        orientation:'vertical'
+        md_bg_color:app.theme_cls.bg_dark
+        # MDFloatingActionButton:
+        #     pos_hint: {'center_x': .5,'center_y': .5}
+        #     on_press:app.change_theme()
+      
+        #Main Content Start Here
+
+        MDCard:
+            id:user_name_card
+            size_hint: 1, None
+            height:root.height*.3
+            # md_bg_color:.2,.5,.8,1
+            elevation:0
+            md_bg_color:app.theme_cls.bg_dark
+            # AnchorLayout:
+            #     MDCard:
+            #         size_hint:.8,.8
+            #         radius:dp(20)
+            #         elevation:dp(30)
+            #         padding:self.width*.1
+            #         spacing:dp(10)
+            #         md_bg_color:app.theme_cls.primary_color
+            #         CircleCard:
+            #             id:CircleCard
+            #             size_hint: None, None
+            #             size: "80", "80"
+            #             radius: self.size[0] / 2
+            #             padding:dp(1)
+            #             elevation:dp(24)
+            #             pos_hint: {'center_x': 1,'center_y': .5}
+                        
+            #             AnchorLayout:
+            #                 FitImage:
+            #                     source:'src/user.png'
+            #                     size_hint:None,None
+            #                     width: dp(70)
+            #                     height: dp(70)
+            #                     radius:[dp(360), dp(360), dp(360), dp(360) ]
+
+            #         MDLabel:
+            #             text:'User_name'
+            #             color:[1]*4
+            #             halign:'left'
+            #             font_style:'H5'
+
+
+            AnchorLayout:
+                anchor_x: 'left'
+                padding: ('40dp', '0dp', '0dp', '0dp')
+                CircleCard:
+                    id:CircleCard
+                    size_hint: None, None
+                    size: "110", "110"
+                    radius: self.size[0] / 2
+                    padding:dp(1)
+                    elevation:dp(24)
+                    AnchorLayout:
+                        FitImage:
+                            source:'src/user.png'
+                            size_hint:None,None
+                            width: dp(100)
+                            height: dp(100)
+                            radius:[dp(360), dp(360), dp(360), dp(360) ]
+
+            MDLabel:
+                text:'User_name'
+                halign:'left'
+                font_style:'H5'
+
+
+
+
+
+
+
+
+        # MDBoxLayout:
+        #     orientation: 'vertical'
+        MDGridLayout:
+            cols:1
+            size_hint_y:root.height*.7
+            spacing:dp(20)
+            padding:[root.size[0]*.1,dp(15)]
+
+            ListMDCard:
+                width:root.size[0]*.8
+                height:root.size[1]*.1
+                padding:dp(20)
+                spacing:dp(15)
+                MDCard:
+                    md_bg_color:app.theme_cls.primary_color
+                    size_hint:None,None
+                    width:dp(35)
+                    height:dp(35)
+                    radius:dp(8)
+                    elevation:dp(2)
+                    pos_hint: {'center_x': .5,'center_y': .5}
+                    MDIcon:
+                        icon:'theme-light-dark'
+                        color:[1]*4
+                        halign:'center'
+                MDLabel:
+                    text:'Theme'
+
+                MDCheckbox:
+                    # md_bg_color:.2,.2,.2,1
+                    pos_hint: {'center_y': .5}
+                    checkbox_icon_normal:'weather-night'
+                    checkbox_icon_down:'weather-sunny'
+                    # halign:'right'
+                    size_hint_x:None
+                    width:dp(35)
+            ListMDCard:
+                width:root.size[0]*.8
+                height:root.size[1]*.1
+                padding:dp(20)
+                spacing:dp(15)
+                on_press:root.manager.current='ProfilePage'
+                MDCard:
+                    md_bg_color:app.theme_cls.primary_color
+                    size_hint:None,None
+                    width:dp(35)
+                    height:dp(35)
+                    radius:dp(8)
+                    elevation:dp(2)
+                    pos_hint: {'center_x': .5,'center_y': .5}
+                    MDIcon:
+                        icon:'account-cowboy-hat'
+                        color:[1]*4
+                        halign:'center'
+                MDLabel:
+                    text:'About Developer'
+
+
+<ListMDCard@MDCard>:
+    size_hint:None,None
+    elevation:dp(18)
+    radius:dp(20)
+
+
+
+
 <ProfilePage>
     name:'ProfilePage'
 
@@ -48,37 +203,134 @@ ScreenManager:
         #Main Content Start Here
 
         MDCard:
-            size_hint: 1, .3
+            id:user_name_card
+            size_hint: 1, None
+            height:root.height*.3
+            # md_bg_color:.2,.5,.8,1
+            elevation:0
             md_bg_color:app.theme_cls.bg_dark
             AnchorLayout:
-                anchor_x: 'left'
-                padding: ('50dp', '0dp', '0dp', '0dp')
-                CircleCard:
-                    size_hint: None, None
-                    size: "110", "110"
-                    radius: self.size[0] / 2
-                    # md_bg_color: 0, 0, 1, 1
-                    padding:dp(1)
-                    elevation:15
-                    AnchorLayout:
-                        FitImage:
-                            source:'src/user.png'
-                            size_hint:None,None
-                            width: dp(100)
-                            height: dp(100)
-                            pos_hint: {'center_x': .5,'center_y': .5}
-                            radius:[dp(360), dp(360), dp(360), dp(360) ]
+                MDCard:
+                    size_hint:.8,.8
+                    radius:dp(20)
+                    elevation:dp(30)
+                    padding:self.width*.1
+                    spacing:dp(10)
+                    md_bg_color:app.theme_cls.primary_color
+                    CircleCard:
+                        id:CircleCard
+                        size_hint: None, None
+                        size: "80", "80"
+                        radius: self.size[0] / 2
+                        padding:dp(1)
+                        elevation:dp(24)
+                        pos_hint: {'center_x': 1,'center_y': .5}
+                        
+                        AnchorLayout:
+                            FitImage:
+                                source:'src/user.png'
+                                size_hint:None,None
+                                width: dp(70)
+                                height: dp(70)
+                                radius:[dp(360), dp(360), dp(360), dp(360) ]
 
-            MDLabel:
-                text:'UserName'
-            
-
-        MDCard:
-            md_bg_color:app.theme_cls.bg_dark
-            size_hint: 1, .8
-            elevation:0
+                    MDLabel:
+                        text:'User_name'
+                        color:[1]*4
+                        halign:'left'
+                        font_style:'H5'
 
 
+            # AnchorLayout:
+            #     anchor_x: 'left'
+            #     padding: ('40dp', '0dp', '0dp', '0dp')
+            #     CircleCard:
+            #         id:CircleCard
+            #         size_hint: None, None
+            #         size: "110", "110"
+            #         radius: self.size[0] / 2
+            #         padding:dp(1)
+            #         elevation:dp(24)
+            #         AnchorLayout:
+            #             FitImage:
+            #                 source:'src/user.png'
+            #                 size_hint:None,None
+            #                 width: dp(100)
+            #                 height: dp(100)
+            #                 radius:[dp(360), dp(360), dp(360), dp(360) ]
+
+            # MDLabel:
+            #     text:'User_name'
+            #     halign:'left'
+            #     font_style:'H5'
 
 
 
+
+
+
+
+
+        # MDBoxLayout:
+        #     orientation: 'vertical'
+        MDGridLayout:
+            cols:1
+            size_hint_y:root.height*.7
+            spacing:dp(20)
+            padding:[root.size[0]*.1,dp(15)]
+
+            ListMDCard:
+                width:root.size[0]*.8
+                height:root.size[1]*.1
+                padding:dp(20)
+                spacing:dp(15)
+                MDCard:
+                    md_bg_color:app.theme_cls.primary_color
+                    size_hint:None,None
+                    width:dp(35)
+                    height:dp(35)
+                    radius:dp(8)
+                    elevation:dp(2)
+                    pos_hint: {'center_x': .5,'center_y': .5}
+                    MDIcon:
+                        icon:'theme-light-dark'
+                        color:[1]*4
+                        halign:'center'
+                MDLabel:
+                    text:'Theme'
+
+                MDCheckbox:
+                    # md_bg_color:.2,.2,.2,1
+                    pos_hint: {'center_y': .5}
+                    checkbox_icon_normal:'weather-night'
+                    checkbox_icon_down:'weather-sunny'
+                    # halign:'right'
+                    size_hint_x:None
+                    width:dp(35)
+            ListMDCard:
+                width:root.size[0]*.8
+                height:root.size[1]*.1
+                padding:dp(20)
+                spacing:dp(15)
+                on_press:root.manager.current='AboutPage'
+                MDCard:
+                    md_bg_color:app.theme_cls.primary_color
+                    size_hint:None,None
+                    width:dp(35)
+                    height:dp(35)
+                    radius:dp(8)
+                    elevation:dp(2)
+                    pos_hint: {'center_x': .5,'center_y': .5}
+                    MDIcon:
+                        icon:'account-cowboy-hat'
+                        color:[1]*4
+                        halign:'center'
+                MDLabel:
+                    text:'About Developer'
+                    
+
+                
+                
+
+                
+                

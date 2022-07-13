@@ -61,8 +61,8 @@ class Main(MDApp):
     path_to_kv_file='kv_file.kv'
     
     def build(self):
-        self.theme_cls.primary_palette = "DeepOrange"
-        self.theme_cls.primary_hue = "A400"
+        self.theme_cls.primary_palette = "DeepPurple"
+        self.theme_cls.primary_hue = "700"
         self.theme_cls.theme_style = "Light"
         # self.theme_cls.theme_style = "Dark"
         self.custom_name = 'Company Name'
@@ -73,6 +73,7 @@ class Main(MDApp):
         self.builder = Builder.load_string(KV)
         
         # self.builder = Builder.load_file('kv_file.kv')
+
         return self.builder
 
 

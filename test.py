@@ -1,67 +1,40 @@
-from kivy.lang import Builder
+import smtplib
+sent_from = "dev.tariqtahir@gmail.com"
 
-from kivymd.app import MDApp
-from kivy.core.window import Window
-from kivymd.uix.label import MDIcon
+to ='thetariqtahir43@gmail.com'
+subject = 'Password Reset'
+link="link"
 
-from kivy.uix.behaviors import ButtonBehavior
+email_text = """\
+From: %s
+To: %s
+Subject: %s
 
-class ClickableMDIcon(ButtonBehavior, MDIcon):
-    pass
+Hi,
 
-KV = '''
-#:import KivyLexer kivy.extras.highlight.KivyLexer
-#:import HotReloadViewer kivymd.utils.hot_reload_viewer.HotReloadViewer
+Please click on below link to reset your password for PasswordManager App.
 
-BoxLayout:
+%s
 
-    # CodeInput:
-    #     lexer: KivyLexer()
-    #     style_name: "native"
-    #     on_text: app.update_kv_file(self.text)
-    #     size_hint_x: .6
+Thanks for using App
 
-    HotReloadViewer:
-      
-        size_hint_x: .3
-        path: app.path_to_kv_file
-        errors: True
-        errors_text_color: 1, 0, 0, 1
-        errors_background_color: app.theme_cls.bg_light
-      
-        
-'''
+Regards
+M. Tariq
+Ph# +923040755464
 
 
-class Example(MDApp):
-    path_to_kv_file = "kv_file_s.kv"
+""" % (sent_from, ", ".join(to), subject,link)
 
-    def build(self):
-        # self.w= Window.size
-        self.w= Window.size =390,650
-        self.theme_cls.theme_style = "Light"
-        # self.theme_cls.theme_style = "Dark"
-        self.theme_cls.primary_palette = "DeepOrange"
-        self.custom_name = 'asdfsd'
-        return Builder.load_string(KV)
-    
-    def text_size(self,value):
-        
-        return 20
 
-    def update_kv_file(self, text):
-       
-        with open(self.path_to_kv_file, "w") as kv_file:
-            kv_file.write(text)
-    
-    def text_replace(self,text,limit):
-        # print(text.text)
-        limit +=1
-        if len(text.text) == limit:
-            text.text = text.text[:limit-1]
-        else:
-            print(len(text.text))
-            
-        
-    
-Example().run()
+
+try:
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.ehlo()
+    server.starttls()
+    server.login('dev.tariqtahir@gmail.com','xmwaqkujwczlrxvm')
+    server.sendmail(sent_from, to, email_text)
+    server.close()
+except:
+    print('Something went wrong...')
+
+# server.login('dev.tariqtahir@gmail.com','xmwaqkujwczlrxvm')
